@@ -22,6 +22,7 @@ public class GmlMultiParser extends Thread {
 	private String threadId;           // Thread name
 	private boolean normalize;
 	private List<String> fileList = new ArrayList<String>();
+	private Map<String, Gml> result;
 	private Object parent;
 	private Method callback;
 
@@ -65,7 +66,7 @@ public class GmlMultiParser extends Thread {
 				if (fileList.size() > 0) {
 					LOGGER.debug("Start parsing: "+fileList.size()+ "files");
 					
-					Map<String, Gml> result = new HashMap<String, Gml>();
+					result = new HashMap<String, Gml>();
 					
 					for (String fileName : fileList) {
 						Gml gml = GmlParsingHelper.getGml(fileName, normalize);
@@ -75,22 +76,23 @@ public class GmlMultiParser extends Thread {
 					}
 					
 					LOGGER.debug("Finished parsing");
-					if (result.size() > 0 && null != callback) {
+					if (null != result && result.size() > 0 && null != callback) {
 						try {
 							// Call the method with this object as the argument!
 							LOGGER.debug("Invoking callback");
 							callback.invoke(parent, new GmlMultiParsingEvent(result) );
 						}
 						catch (Exception e) {
-							LOGGER.warn("Couldn't invoke the callback method for some reason. "+e.getMessage());
+							//LOGGER.debug("Couldn't invoke the callback method for some reason. "+e.getMessage());
 						}
 					}
 				}
-				fileList.clear();							
+				result = null;
+				fileList.clear();
 
 				sleep((long)(wait));	
 			}
-			// TODO Lock and loop issue exception when NullPointerExceptions in GmlParsingHelper
+			// TODO Lock and loop issue exception when NullPointerExceptions in GmlMultiParsingHelper
 			catch (Exception e) {
 				//LOGGER.warn(e.getMessage());
 			}
