@@ -324,14 +324,13 @@ public class GmlStroke {
 	 * @param point - GmlPoint
 	 */
 	public void addPoint(GmlPoint point) {
-		if (!point.isInAABB(boundingBox)) {
-			LOGGER.warn("Inconsistent GmlPoint "+ point +". Reason: outside "+ boundingBox);
-		}
 		if (null == point) {
 			LOGGER.warn("GmlPoint "+ point +" wasn't added. Reason: null");	
 			return;
 		}
-
+		if (!point.isInAABB(boundingBox)) {
+			LOGGER.warn("Inconsistent GmlPoint "+ point +". Reason: outside "+ boundingBox);
+		}
 		GmlPoint last = getLastPoint();
 		if (null != last) {
 			length += last.distanceTo(point); 

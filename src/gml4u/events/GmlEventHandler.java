@@ -15,8 +15,8 @@ public class GmlEventHandler {
 
 	private Set<Object> listeners = new HashSet<Object>();
 	private final String callbackMethod = "gmlEvent";	
-	@SuppressWarnings("unchecked")
-	private final Class callbackParameterClass = GmlEvent.class; 
+	//@SuppressWarnings("unchecked")
+	private final Class<?> callbackParameterClass = GmlEvent.class; 
 
 	/**
 	 * Creates a new GmlEventHandler

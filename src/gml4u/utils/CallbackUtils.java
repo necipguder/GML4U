@@ -13,8 +13,7 @@ public class CallbackUtils {
 	 * @param classe - Class
 	 * @return boolean
 	 */
-	@SuppressWarnings("unchecked")
-	public static boolean hasRequiredCallback(Object object, String methodName, Class classe) {
+	public static boolean hasRequiredCallback(Object object, String methodName, Class<?> classe) {
 		
 		try {
 			object.getClass().getMethod(methodName, classe);

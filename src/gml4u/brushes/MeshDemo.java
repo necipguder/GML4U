@@ -38,7 +38,7 @@ public class MeshDemo extends GmlStrokeDrawer {
 		g.beginShape(PConstants.TRIANGLES);
 		// iterate over all faces/triangles of the mesh
 		//for(Face f : mesh.faces) {
-		for(Iterator i=mesh.faces.iterator(); i.hasNext();) {
+		for(Iterator<?> i=mesh.faces.iterator(); i.hasNext();) {
 			Face f=(Face)i.next();
 			if (g.is3D()) {
 				g.vertex(f.a.x, f.a.y, f.a.z);

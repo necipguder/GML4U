@@ -504,20 +504,20 @@ public class GmlParsingHelper {
 			}		
 		}
 		else {
-			if (isVec3D((List) element.getChildren())) {
-				Vec3D v = getGmlVec3D((List) element.getChildren());
+			if (isVec3D((List<Element>) element.getChildren())) {
+				Vec3D v = getGmlVec3D((List<Element>) element.getChildren());
 				return v;
 			}
-			else if (isVec2D((List) element.getChildren())) {
-				Vec2D v = getGmlVec2D((List) element.getChildren());
+			else if (isVec2D((List<Element>) element.getChildren())) {
+				Vec2D v = getGmlVec2D((List<Element>) element.getChildren());
 				return v;
 			}
-			else if (isColor((List) element.getChildren())) {
-				Color c = getGmlColor((List) element.getChildren());
+			else if (isColor((List<Element>) element.getChildren())) {
+				Color c = getGmlColor((List<Element>) element.getChildren());
 				return c;
 			}
-			else if (isLocation((List) element.getChildren())) {
-				GmlLocation loc = getGmlLocation((List) element.getChildren());
+			else if (isLocation((List<Element>) element.getChildren())) {
+				GmlLocation loc = getGmlLocation((List<Element>) element.getChildren());
 				return loc;
 			}
 			else {
