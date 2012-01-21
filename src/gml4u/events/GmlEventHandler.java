@@ -1,6 +1,5 @@
 package gml4u.events;
 
-import gml4u.events.GmlEventHandler;
 import gml4u.utils.CallbackUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -31,10 +30,7 @@ public class GmlEventHandler {
 	public void addListener(Object listener) {
 
 		// Check callback methods
-		if (!CallbackUtils.hasRequiredCallback(listener, "gmlEvent", GmlEvent.class)) {
-			LOGGER.warn(listener.getClass()+" shall implement a \"public void gmlEvent(GmlEvent event)\" method to be able to receive GmlEvent");
-		}
-		else {
+		if (CallbackUtils.hasRequiredCallback(listener, "gmlEvent", GmlEvent.class)) {
 			listeners.add(listener);
 		}
 	}
