@@ -52,8 +52,10 @@ public class GmlParser extends Thread {
 	 */
 	public void start () {
 		LOGGER.debug("Starting thread");
-		running = true;
-		super.start();
+		if (!running) {
+			running = true;
+			super.start();
+		}
 	}
 
 	/**
