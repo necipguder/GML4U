@@ -43,6 +43,8 @@ public class GmlParser extends Thread {
 		this.wait = wait;
 		this.running = false;
 		this.threadId = id;
+		
+		start();
 	}
 
 	/**
