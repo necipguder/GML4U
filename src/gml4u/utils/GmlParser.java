@@ -1,10 +1,13 @@
 package gml4u.utils;
 
+
 import gml4u.events.GmlEvent;
 import gml4u.events.GmlParsingEvent;
 import gml4u.model.Gml;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -16,13 +19,12 @@ public class GmlParser extends Thread {
 	private int wait;                  // How many milliseconds should we wait in between executions?
 	private String threadId;           // Thread name
 	private boolean normalize;
-	private String location;
-	private Gml result;
+	private List<String> fileList = new ArrayList<String>();
 	private Object parent;
 	private Method callback;
 
 	/**
-	 * Creates a new GmlParser thread
+	 * Creates a new GmlMultiParser thread
 	 * The parent object must implement a <i>public void gmlEvent(GmlEvent event)</i> method.
 	 * @param wait - int (waiting time in ms)
 	 * @param id - String (thread id)
@@ -58,28 +60,28 @@ public class GmlParser extends Thread {
 	public void run () {
 		while (running){
 			try {
-				if (!location.equals("")) {
-					LOGGER.debug("Start parsing: "+location);
-					result = GmlParsingHelper.getGml(location, normalize);
+				if (fileList.size() > 0) {
+					LOGGER.debug("Start parsing: "+fileList.size()+ "files");
 					
-					LOGGER.debug("Finished parsing");
-					if (null != result && null != callback) {
-						try {
-							// Call the method with this object as the argument!
-							LOGGER.debug("Invoking callback");
-							callback.invoke(parent, new GmlParsingEvent(result) );
-						}
-						catch (Exception e) {
-							LOGGER.warn("Couldn't invoke the callback method for some reason. "+e.getMessage());
+					for (String fileName : fileList) {
+						Gml gml = GmlParsingHelper.getGml(fileName, normalize);
+						if (null != gml && null !=callback) {
+							try {
+								// Call the method with this object as the argument!
+								LOGGER.debug("Invoking callback");
+								callback.invoke(parent, new GmlParsingEvent(gml) );
+							}
+							catch (Exception e) {
+								//LOGGER.debug("Couldn't invoke the callback method for some reason. "+e.getMessage());
+							}
 						}
 					}
 				}
-				result = null;
-				location = "";							
+				fileList.clear();
 
 				sleep((long)(wait));	
 			}
-			// TODO Lock and loop issue exception when NullPointerExceptions in GmlParsingHelper
+			// TODO Lock and loop issue exception when NullPointerExceptions in GmlMultiParsingHelper
 			catch (Exception e) {
 				//LOGGER.warn(e.getMessage());
 			}
@@ -89,28 +91,93 @@ public class GmlParser extends Thread {
 	}
 
 	/**
-	 * Parses a GML file using the given location.<br/>
-	 * Can be a local file or a http resource as well.<br/>
-	 * Note that you might need a local proxy to access extenal http resources when running inside an unsigned Applet 
-	 * @param location - String
+	 * Parses GML files matching the regex and found in the given folder and normalizes them if explicitly asked.<br/>
+	 * Must be a local file.<br/>
+	 * @param folder - String
+	 * @param regex - String
+	 * @param normalize - boolean
 	 */
-	public void parse(final String location) {
-		LOGGER.debug(location + " to be parsed");
-		this.location = location;
-		this.normalize = false;
+	public void parseFolder(final String folder, String regex, boolean normalize) {
+		LOGGER.debug("Scanning "+folder);
+		List<String> files = FileUtils.scanFolder(folder, regex);
+		this.fileList.addAll(files);
+		this.normalize = normalize;
+	}
+
+	/**
+	 * Parses GML files (with .gml extension) found in the given folder and normalizes them if explicitly asked.<br/>
+	 * Must be a local file <br/>
+	 * @param folder - String
+	 * @param normalize - boolean
+	 */
+	public void parseFolder(final String folder, boolean normalize) {
+		parseFolder(folder, FileUtils.GML_FILE_REGEX, normalize);
 	}
 	
 	/**
-	 * Parses a GML file using the given location and normalizes it.<br/>
-	 * Can be a local file or a http resource as well.<br/>
-	 * Note that you might need a local proxy to access extenal http resources when running inside an unsigned Applet 
-	 * @param location - String
+	 * Parses and normalizes GML files matching the given regex and found in the given folder.<br/>
+	 * Must be a local file <br/>
+	 * @param folder - String
+	 * @param regex - String
+	 */
+	public void parseFolder(final String folder, String regex) {
+		parseFolder(folder, regex, true);
+	}
+	
+	/**
+	 * Parses a list of GML file using their given location and normalizes them.<br/>
+	 * Must be a local file <br/>
+	 * @param folder - String
 	 * @param normalize - boolean
 	 */
-	public void parse(final String location, boolean normalize) {
-		LOGGER.debug(location + " to be parsed");
-		this.location = location;
+	public void parseFolder(final String folder) {
+		parseFolder(folder, FileUtils.GML_FILE_REGEX, true);
+	}
+
+	/**
+	 * Parses a list of GML files using their given location and normalizes them if explicitly asked.<br/>
+	 * Can be local files or http resources as well.<br/>
+	 * Note that you might need a local proxy to access extenal http resources when running inside an unsigned Applet 
+	 * @param fileList - String
+	 * @param normalize - boolean
+	 */
+	public void parseFiles(final List<String> fileList, boolean normalize) {
+		LOGGER.debug(fileList + " to be parsed");
+		this.fileList.addAll(fileList);
 		this.normalize = normalize;
+	}
+	
+	/**
+	 * Parses a list of GML files using their given location and normalizes them.<br/>
+	 * Can be local files or http resources as well.<br/>
+	 * Note that you might need a local proxy to access extenal http resources when running inside an unsigned Applet 
+	 * @param fileList - String
+	 */
+	public void parseFiles(final List<String> fileList) {
+		parseFiles(fileList, true);
+	}
+	
+	/**
+	 * Parses a GML file using its given location and normalizes it if explicitly asked.<br/>
+	 * Can be a local files or a http resources as well.<br/>
+	 * Note that you might need a local proxy to access extenal http resources when running inside an unsigned Applet 
+	 * @param file - String
+	 * @param normalize - boolean
+	 */
+	public void parse(final String file, boolean normalize) {
+		LOGGER.debug(file + " to be parsed");
+		this.fileList.add(file);
+		this.normalize = normalize;
+	}
+	
+	/**
+	 * Parses a GML file using its given location and normalizes it.<br/>
+	 * Can be local file or a http resources as well.<br/>
+	 * Note that you might need a local proxy to access extenal http resources when running inside an unsigned Applet 
+	 * @param fileList - String
+	 */
+	public void parse(final String file) {
+		parse(file, true);
 	}
 
 	/**

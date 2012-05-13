@@ -46,7 +46,7 @@ public class GmlParsingHelper {
 	 */
 	public static Gml getGml(String file, boolean normalize) {
 
-		LOGGER.warn("Parsing "+ file);
+		LOGGER.debug("Parsing "+ file);
 
 		Gml gml = parseGml(file);
 
@@ -55,7 +55,7 @@ public class GmlParsingHelper {
 
 		if (normalize) {
 
-			LOGGER.warn("normalize "+ normalize);
+			LOGGER.debug("normalize "+ normalize);
 			
 
 			// At this point all Gml points should

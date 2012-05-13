@@ -12,6 +12,8 @@ public class FileUtils {
 
 	private static final Logger LOGGER = Logger.getLogger(FileUtils.class.getName());
 
+	public static final String GML_FILE_REGEX = "^.*\\.gml$"; 
+	
 	/**
 	 * Lists and filters files inside the given folder using a regular expression
 	 * If the regex is badly formatted, empty or null, then the result will not be filtered
@@ -21,8 +23,8 @@ public class FileUtils {
 	 */
 	public static List<String> scanFolder(String folder, String regex) {
 		if (null == regex || regex.length() == 0) {
-			LOGGER.warn("Regex is empty of null, not filter will be used");
-			regex = ".*";
+			LOGGER.warn("Regex is empty of null: will search for \"*.gml\" files");
+			regex = GML_FILE_REGEX;
 		}
 		else {
 			try {
@@ -43,5 +45,14 @@ public class FileUtils {
 			}
 		}
 		return filteredList;
+	}
+	
+	/**
+	 * Lists files (with a .gml extension) inside the given folder
+	 * @param folder
+	 * @return List<String>
+	 */
+	public static List<String> scanFolder(String folder) {
+		return scanFolder(folder, GML_FILE_REGEX);
 	}
 }
