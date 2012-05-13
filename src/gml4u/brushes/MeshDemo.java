@@ -99,6 +99,7 @@ public class MeshDemo extends GmlStrokeDrawer {
 				q.set(b);
 			}	
 		}
+		mesh.computeVertexNormals();
 		return mesh;
 	}
 }

@@ -38,7 +38,7 @@ public class BoxesDemo extends GmlStrokeDrawer {
 				g.box(cur.distanceTo(prev));
 			}
 			else {
-				g.translate(cur.x, cur.y, cur.z);
+				g.translate(cur.x, cur.y);
 				g.rotate(cur.distanceTo(prev));
 				g.rectMode(PApplet.CENTER);
 				g.rect(0, 0, cur.distanceTo(prev), cur.distanceTo(prev));
