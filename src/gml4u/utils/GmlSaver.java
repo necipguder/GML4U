@@ -5,8 +5,13 @@ import gml4u.events.GmlSavingEvent;
 import gml4u.model.Gml;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import processing.core.PApplet;
 
 public class GmlSaver extends Thread {
 
@@ -15,8 +20,7 @@ public class GmlSaver extends Thread {
 	private boolean running;           // Is the thread running?  Yes or no?
 	private int wait;                  // How many milliseconds should we wait in between executions?
 	private String threadId;           // Thread name
-	private Gml gml;
-	private String location;
+	private Map <String, Gml> gmlLocations = new HashMap<String, Gml>();
 	private Object parent;
 	private Method callback;
 
@@ -40,6 +44,8 @@ public class GmlSaver extends Thread {
 		this.wait = wait;
 		this.running = false;
 		this.threadId = id;
+		
+		start();
 	}
 
 	/**
@@ -47,8 +53,10 @@ public class GmlSaver extends Thread {
 	 */
 	public void start () {
 		LOGGER.debug("Starting thread");
-		running = true;
-		super.start();
+		if (!running) {
+			running = true;
+			super.start();
+		}
 	}
 
 	/**
@@ -57,25 +65,27 @@ public class GmlSaver extends Thread {
 	public void run () {
 		while (running){
 			try {
-				if (null != gml && !location.equals("")) {
+				if (gmlLocations.size() > 0) {
 
-					LOGGER.debug("Start saving: "+location);
-					boolean successful = GmlSavingHelper.save(gml, location);
-					
-					LOGGER.debug("Finished saving");
-					if (callback != null) {
-						try {
-							// Call the method with this object as the argument!
-							LOGGER.debug("Invoking callback");
-							callback.invoke(parent, new GmlSavingEvent(location, successful) );
-						}
-						catch (Exception e) {
-							LOGGER.warn("I couldn't invoke that method for some reason. "+e.getMessage());
+					LOGGER.debug("Start saving: "+ gmlLocations.size() +" file(s)");
+					for (String location : gmlLocations.keySet()) {
+						boolean successful = GmlSavingHelper.save(gmlLocations.get(location), location);
+						
+						if (callback != null) {
+							try {
+								// Call the method with this object as the argument!
+								LOGGER.debug("Invoking callback");
+								callback.invoke(parent, new GmlSavingEvent(location, successful) );
+							}
+							catch (Exception e) {
+								LOGGER.warn("I couldn't invoke that method for some reason. "+e.getMessage());
+							}
 						}
 					}
+					
+					LOGGER.debug("Finished saving");
 				}
-				location = "";
-				gml = null;						
+				gmlLocations.clear();						
 
 				sleep((long)(wait));	
 			}
@@ -86,17 +96,53 @@ public class GmlSaver extends Thread {
 		LOGGER.debug(threadId + " thread is done!");  // The thread is done when we get to the end of run()
 		quit();
 	}
-
+	
 	/**
-	 * Saves a GML file given its location
-	 * @param location
+	 * Saves a GML file to root of the sketch
+	 * @param location - String
+	 * @param gml - Gml
 	 */
-	public void save(final Gml gml, final String location) {
-		LOGGER.debug(location + " to be saved");
-		this.gml = gml;
-		this.location = location;
+	public void save(Gml gml) {
+		String sketchPath = ((PApplet) parent).sketchPath;
+		String location = sketchPath+"/"+gml.getFileName();
+		LOGGER.debug("About to save a file as" + location);
+		this.gmlLocations.put(location, gml);
 	}
-		
+	
+	/**
+	 * Saves a GML file to the given location (path shall include filename)
+	 * If the folder is not found, it will attempt to create it
+	 * @param gml - Gml
+	 * @param location - String
+	 */
+	public void save(Gml gml, String location) {
+		LOGGER.debug("About to save a Gml to " + location);
+		this.gmlLocations.put(location, gml);
+	}
+	
+	/**
+	 * Saves a list of GML file to the given folder using the filename stored in each Gml object
+	 * If the folder is not found, it will attempt to create it
+	 * @param gml - List<Gml>
+	 * @param folder - String
+	 */
+	public void save(List<Gml> gmlList, String folder) {
+		LOGGER.debug("About to save "+gmlLocations.size()+" Gml files to" + folder);
+		for (Gml gml : gmlList) {
+			save(gml, folder+"/"+gml.getFileName());
+		}
+	}
+	
+	/**
+	 * Saves GML files given a location for each file
+	 * If the folder is not found, it will attempt to create it
+	 * @param locations - Map<String, Gml>
+	 */
+	public void save(Map<String, Gml> gmlLocations) {
+		LOGGER.debug("About to save "+gmlLocations.size() +" Gml files");
+		this.gmlLocations.putAll(gmlLocations);
+	}
+
 	/**
 	 * Quits the thread
 	 */

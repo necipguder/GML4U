@@ -76,8 +76,13 @@ public class GmlSavingHelper {
 		// TODO choose which version to save into and create a factory
 		
 		LOGGER.debug("Start saving GML file to "+location);
+		
 
 		try {
+			// Make sure the folder exists
+			String folder = FileUtils.getFolder(location);
+			FileUtils.ensureFolderExists(folder);
+			// Save the file
 			Document document = createDocument(gml);
 			XmlUtils.saveDocument(document, location);
 			return true;
