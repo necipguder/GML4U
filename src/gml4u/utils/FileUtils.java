@@ -13,7 +13,9 @@ public class FileUtils {
 
 	private static final Logger LOGGER = Logger.getLogger(FileUtils.class.getName());
 
-	public static final String GML_FILE_REGEX = "^.*\\.gml$"; 
+	public static final String GML_FILE_REGEX = "^.*\\.gml$";
+	public static final String XML_FILE_REGEX = "^.*\\.xml$";
+	public static final String GML_XML_FILE_REGEX = "^.*\\.(x|g)ml$";
 	
 	/**
 	 * Lists and filters files inside the given folder using a regular expression
