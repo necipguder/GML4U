@@ -3,6 +3,7 @@ package gml4u.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -54,5 +55,43 @@ public class FileUtils {
 	 */
 	public static List<String> scanFolder(String folder) {
 		return scanFolder(folder, GML_FILE_REGEX);
+	}
+	
+	/**
+	 * Generates a random name for GML4U files
+	 * @return
+	 */
+	public static String generateRandomName() {
+		return "GML4U_"+UUID.randomUUID().toString()+".gml";
+	}
+	
+	/**
+	 * Ensures that the give folder exists by creating it if needed
+	 * @param folder
+	 */
+	public static void ensureFolderExists(String folder) {
+		File file = new File(folder);
+		boolean success = file.mkdirs();
+		if (!success) {
+		    LOGGER.debug("Wrong folder name or folder already exists: "+folder);
+		}
+		else {
+			LOGGER.debug("Created folder: "+folder);
+		}
+	}
+	
+	/**
+	 * Removes a filename from a full path and returns the folder path
+	 * Returns null if the path is incorrect
+	 * @param filePath
+	 * @return
+	 */
+	public static String getFolder(String filePath) {
+		String regex = "^(.*)/([^/]*)$";
+		if (filePath.matches(regex)) {
+		  String folder = filePath.replaceAll(regex, "$1");
+		  return folder;
+		}
+		return null;
 	}
 }
