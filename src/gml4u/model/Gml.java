@@ -1,5 +1,7 @@
 package gml4u.model;
 
+import gml4u.utils.FileUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -17,6 +19,8 @@ public class Gml {
 
 	private static final Logger LOGGER = Logger.getLogger(Gml.class.getName());
 
+	public static final String FILENAME ="filename";
+	
 	public GmlEnvironment environment;
 	public GmlClient client;
 	private SortedMap<Integer, ArrayList<GmlStroke>> layers = new TreeMap<Integer, ArrayList<GmlStroke>>();
@@ -28,6 +32,7 @@ public class Gml {
 	public Gml(Vec3D screenBounds) {
 		client = new GmlClient();
 		environment = new GmlEnvironment(screenBounds);
+		setFileName("");
 	}
 
 	/**
@@ -35,6 +40,31 @@ public class Gml {
 	 */
 	public Gml() {
 		this(new Vec3D(1, 1, 1));
+	}
+	
+	public void setFileName(String name) {
+		if (null == name || name.equals("")) {
+			name = FileUtils.generateRandomName();
+			LOGGER.warn("No name provided, using a generated ID instead: "+name);
+		}
+		this.client.set(FILENAME, name);
+	}
+	
+	/**
+	 * Gets the filename set for this Gml
+	 * If not already set, a random one is automatically generated 
+	 * @return
+	 */
+	public String getFileName() {
+		String name = "";
+		if (null == client.getString(FILENAME)) {
+			name = FileUtils.generateRandomName();
+			setFileName(name);
+		}
+		else {
+			name = client.getString(FILENAME); 
+		}
+		return name;
 	}
 
 	/**
@@ -70,9 +100,9 @@ public class Gml {
 
 	// TODO getFirstPoint()
 
+	// TODO getFirstPoint(float time)
+
 	// TODO getLastPoint()	
-	
-	// TODO getLastPoint(float time)
 	
 	// TODO getLastPoint(float time)
 	
