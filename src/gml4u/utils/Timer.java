@@ -79,12 +79,28 @@ public class Timer {
 	}
 	
 	/**
+	 * Returns the interval used by tick()
+	 * @param step
+	 */
+	public float getStep() {
+		return step;
+	}
+	
+	/**
 	 * Sets the interval used by tick() when used without argument
 	 * @param step
 	 */
 	public void setStep(float step) {
 		this.step = step;
 	}
+	
+	/**
+	 * Inverts the direction of timer
+	 */
+	public void invert() {
+		step *= -1;
+	}
+	
 	
 	/**
 	 * Adds the defined step interval to the timer

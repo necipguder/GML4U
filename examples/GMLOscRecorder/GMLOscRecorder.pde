@@ -1,4 +1,11 @@
-/*
+/**
+* GML4U library
+* Author Jerome Saint-Clair
+* http://saint-clair.net
+*
+* This example shows how to use the GmlRecorder to record 
+* and save GML from OSC events
+*
 * Requirements:
 * 
 * You'll need oscP5  Processing library to run this sketch
@@ -64,11 +71,9 @@ void setup() {
 
   // GmlParser to load a Gml file
   parser = new GmlParser(500, "", this);
-  parser.start();
 
   // GmlSaver to save a Gml
   saver = new GmlSaver(500, "", this);
-  saver.start();
   
   // Start recording by default
   GmlBrush brush = new GmlBrush();

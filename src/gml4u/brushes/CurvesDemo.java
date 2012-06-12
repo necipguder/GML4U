@@ -16,8 +16,12 @@ public class CurvesDemo extends GmlStrokeDrawer {
 	 */
 	public CurvesDemo() {
 		super(ID);
+		is3D(true);
 	}
 
+	/**
+	 * Implementation of the abstract method defined in GmlStrokeDrawer
+	 */
 	public void draw(PGraphics g, GmlStroke stroke, float scale, float minTime, float maxTime) {
 			
 		g.pushStyle();

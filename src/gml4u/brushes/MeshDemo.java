@@ -14,9 +14,9 @@ import toxi.geom.mesh.TriangleMesh;
 
 public class MeshDemo extends GmlStrokeDrawer {
 
-	
+
 	public static final String ID = "GML4U_STYLE_MESH0000"; 
-	
+
 	/**
 	 * MeshDemo constructor
 	 */
@@ -57,7 +57,7 @@ public class MeshDemo extends GmlStrokeDrawer {
 		g.popMatrix();
 
 	}
-	
+
 
 	// TODO move that to an Helper
 	private static TriangleMesh buildMesh(GmlStroke stroke, float minTime, float maxTime) {

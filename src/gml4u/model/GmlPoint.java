@@ -47,6 +47,18 @@ public class GmlPoint extends Vec3D {
 	}
 	
 	/**
+	 * Creates a new GmlPoint from another GmlPoint
+	 * @param point - GmlPoint
+	 */
+	public GmlPoint(GmlPoint point) {
+		super.set(point);
+		this.time = point.time;
+		this.preasure = point.preasure;
+		this.rotation = new Vec3D(point.rotation);
+		this.direction = new Vec3D(point.direction);
+	}
+	
+	/**
 	 * Sets the GmlPoint using another GmlPoint
 	 * @param point - GmlPoint
 	 */

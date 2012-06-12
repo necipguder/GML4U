@@ -45,7 +45,6 @@ public class Gml {
 	public void setFileName(String name) {
 		if (null == name || name.equals("")) {
 			name = FileUtils.generateRandomName();
-			LOGGER.warn("No name provided, using a generated ID instead: "+name);
 		}
 		this.client.set(FILENAME, name);
 	}

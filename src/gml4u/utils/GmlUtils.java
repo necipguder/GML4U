@@ -12,7 +12,7 @@ import toxi.geom.AABB;
 import toxi.geom.Vec3D;
 
 public class GmlUtils {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(GmlUtils.class.getName());
 
 	/**
@@ -74,7 +74,7 @@ public class GmlUtils {
 		if (null != gml.environment.offset) {
 			Vec3DUtils.reorient(gml.environment.offset, up);
 		}
-		
+
 
 		// Reorient scaling vectors
 		Vec3DUtils.reorient(gml.environment.originalOriginShift, up);
@@ -83,7 +83,7 @@ public class GmlUtils {
 		Vec3DUtils.swap(gml.environment.normalizedAspectRatio, up);
 
 		if (null != gml.environment.realScale) {
-		Vec3DUtils.swap(gml.environment.realScale, up);
+			Vec3DUtils.swap(gml.environment.realScale, up);
 		}
 		if (null != gml.environment.rotation) {
 			Vec3DUtils.swap(gml.environment.rotation, up);
@@ -138,16 +138,16 @@ public class GmlUtils {
 	 * @param gml - Gml
 	 */
 	public static void normalize(Gml gml) {
-		
+
 		// TODO check that z is not too large
 		// Dustag exceeds 1 for z
 		// Remap all points to fit within a min of 0, 0, 0 and a max of 1, 1, 1
-        //<name>Graffiti Analysis 2.0: DustTag</name>
-        //<version>1.0</version>
-		
+		//<name>Graffiti Analysis 2.0: DustTag</name>
+		//<version>1.0</version>
+
 		// Case by case normalization
 		//Rescale all Z for Graffiti Analysis 2.0: DustTag
-		
+
 		// Get BoundingBox
 		AABB boundingBox = gml.getBoundingBox();
 		LOGGER.debug("bounding box before scaling"+ boundingBox.getMin() + " " + boundingBox.getMax());
@@ -157,29 +157,64 @@ public class GmlUtils {
 
 		// Original aspect ratio of the tag
 		Vec3D originalAspectRatio = boundingBox.getExtent().scale(2);
-		
+
 		// Used to scale the tag to a max of 1 on the longest axis
 		Vec3D scaling = originalAspectRatio.getReciprocal();
-		
+
 		// Remap all points to fit within a min of 0, 0, 0 and a max of 1, 1, 1
 		List<GmlStroke> strokes = (List<GmlStroke>) gml.getStrokes();
 		for (GmlStroke stroke : strokes) {
 			List<GmlPoint> points = stroke.getPoints();
-			for(GmlPoint point: points) {
-				point.subSelf(originShift);
-				point.scaleSelf(scaling);
+
+			//for(GmlPoint point: points) {
+
+			//point.subSelf(originShift);
+			//point.scaleSelf(scaling);
+			// Fix NaN
+			//if (point.x != point.x) point.x = 0;
+			//if (point.y != point.y) point.y = 0;
+			//if (point.z != point.z) point.z = 0;
+			//}
+
+			for(int i=0; i<points.size(); i++) {
+				GmlPoint p = points.get(i);
+				p.subSelf(originShift);
+				p.scaleSelf(scaling);
+
 				// Fix NaN
-				if (point.x != point.x) point.x = 0;
-				if (point.y != point.y) point.y = 0;
-				if (point.z != point.z) point.z = 0;
+				if (p.x != p.x || p.y != p.y || p.z != p.z) {
+					points.remove(i);
+				}
+				else {
+					points.set(i, p);
+				}
+
 			}
 			stroke.replacePoints(points);
 		}
 		gml.replaceStrokes(strokes);
 
+		// Normalize z axis
+		// Get max z
+		
 		boundingBox = gml.getBoundingBox();
 		LOGGER.debug("bonding box after rescale"+ boundingBox.getMin() + " " + boundingBox.getMax());
 		
+		float maxZ = boundingBox.getMax().z; 
+		if(maxZ > 1) {
+			LOGGER.debug("Z axis too long. Rescaling to fit 0-1");
+		// Else remap between 0 and 1
+			for (GmlStroke strok : gml.getStrokes()) {
+				float nPoints = strok.getPoints().size();
+				for (int i=0; i<nPoints; i++) {
+					strok.getPoints().get(i).z = strok.getPoints().get(i).z/maxZ;
+				} 
+			}		
+		}
+		boundingBox = gml.getBoundingBox();
+		LOGGER.debug("bonding box after z axis correction"+ boundingBox.getMin() + " " + boundingBox.getMax());		
+
+
 		// Store the aspect ratio and origin for reverse scaling
 		// Any point can then be rescaled to original value by doing:
 		//(point.scaleSelf(originalAspectRatio).addSelf(originShift);
@@ -203,7 +238,7 @@ public class GmlUtils {
 	 */
 	// TODO lightWeight
 	public static void lightWeight(Gml gml, float interval) {
-		
+
 	}
 
 	/**
@@ -261,7 +296,7 @@ public class GmlUtils {
 			gml.replaceStrokes(strokes);
 		}
 	}
-	
+
 	// TODO stats() get all info about the drawing
-	
+
 }

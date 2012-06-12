@@ -321,11 +321,11 @@ public class GmlSavingHelper {
 		y.appendChild(document.createTextNode(""+v.y));
 		element.appendChild(y);
 		
-		if (0 != v.z ||  !autoVec2D) { // Optional
+		//if (0 != v.z ||  !autoVec2D) { // Optional
 			Element z = document.createElement("z");
 			z.appendChild(document.createTextNode(""+v.z));
 			element.appendChild(z);
-		}
+		//}
 		return element;
 	}
 	

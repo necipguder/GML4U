@@ -16,8 +16,12 @@ public class BoxesDemo extends GmlStrokeDrawer {
 	 */
 	public BoxesDemo() {
 		super(ID);
+		is3D(true);
 	}
 
+	/**
+	 * Implementation of the abstract method defined in GmlStrokeDrawer
+	 */
 	public void draw(PGraphics g, GmlStroke stroke, float scale, float minTime, float maxTime) {
 			
 		GmlPoint prev = new GmlPoint();

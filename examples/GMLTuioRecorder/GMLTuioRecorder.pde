@@ -1,4 +1,11 @@
-/*
+/**
+* GML4U library
+* Author Jerome Saint-Clair
+* http://saint-clair.net
+*
+* This example shows how to use the GmlRecorder to record 
+* and save GML from TUIO events
+*
 * Requirements:
 * 
 * You'll need the TUIO  Processing library to run this sketch
@@ -37,6 +44,7 @@ GmlParser parser;
 GmlSaver saver;
 GmlBrushManager brushManager;
 Vec3D screen;
+int startTime = 0;
 
 public TuioProcessing tuioClient;
 
@@ -60,11 +68,9 @@ void setup() {
 
   // GmlParser to load a Gml file
   parser = new GmlParser(500, "", this);
-  parser.start();
 
   // GmlSaver to save a Gml
   saver = new GmlSaver(500, "", this);
-  saver.start();
 }
 
 
@@ -102,10 +108,20 @@ void gmlEvent(GmlEvent event) {
 void keyPressed() {
 
   if (key == 's' || key == 'S') {
-    saver.save(recorder.getGml(), sketchPath+"/gml.xml");
+     Gml gml = recorder.getGml();
+    for (GmlStroke strok : gml.getStrokes()) {
+     float nPoints = strok.getPoints().size();
+     float step = 1/nPoints;
+     for (int i=0; i<nPoints; i++) {
+      strok.getPoints().get(i).z = i*step;
+     } 
+    }
+    recorder.clear();
+    
+    saver.save(gml, sketchPath+"/gml.gml");
   }
   else if (key == 'l' || key == 'L') {
-    parser.parse(sketchPath+"/gml.xml", false);
+    parser.parse(sketchPath+"/gml.gml", false);
   }
   else if (key == ' ') {
     recorder.clear();
@@ -122,13 +138,14 @@ void addTuioObject(TuioObject tobj) {
   GmlBrush brush = new GmlBrush();
   brush.set(GmlBrush.UNIQUE_STYLE_ID, MeshDemo.ID);
   recorder.beginStroke(tobj.getSymbolID(), 0, brush);
+  startTime = frameCount;
 }
 
 // called when an object is moved
 void updateTuioObject (TuioObject tobj) {	
   // Get pointer coords
-  Vec3D v = new Vec3D(tobj.getX(), tobj.getY(), 0);
-  recorder.addPoint(tobj.getSymbolID(), v, 0);
+  Vec3D v = new Vec3D(tobj.getX(), tobj.getY(), startTime/300);
+  recorder.addPoint(tobj.getSymbolID(), v, frameCount-startTime);
 }
 
 // called when an object is removed from the scene

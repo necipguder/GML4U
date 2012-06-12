@@ -27,7 +27,7 @@ GmlParser parser;
 GmlSaver saver;
 
 // Declare a GmlBrushManager (used to draw)
-GmlBrushManager brushManager = new GmlBrushManager();
+GmlBrushManager brushManager = new GmlBrushManager(this);
 
 void setup() {
   size(600, 400, P2D);
@@ -44,11 +44,11 @@ void setup() {
   // NOTE you can comment / uncomment the lines below to test the different parsing methods
 
   // Parsing without using a thread
-  Gml gml1 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml", false); // Parsing (no normalisation)
-  gmls.add(gml1); // Add it to the gml list
+  //Gml gml1 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml", false); // Parsing (no normalisation)
+  //gmls.add(gml1); // Add it to the gml list
 
-  Gml gml2 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml");
-  gmls.add(gml2); // Add it to the gml list
+  //Gml gml2 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml");
+  //gmls.add(gml2); // Add it to the gml list
 
   // Parsing using a thread (GmlParser)
 
@@ -59,7 +59,7 @@ void setup() {
   //parser.parseFolder(sketchPath);
 
   // Parsing using a list of files previously retrieved
-  List<String> files = FileUtils.scanFolder(sketchPath+"/others", "^.*(x|g)ml$"); // Gets a list of files with a xml or gml extension
+  List<String> files = FileUtils.scanFolder(sketchPath+"/vienna", "^.*(x|g)ml$"); // Gets a list of files with a xml or gml extension
   //parser.parseFiles(files, false); // Parses the files listed above (no normalization)
   parser.parseFiles(files); // Parses the files listed above
 
@@ -83,7 +83,7 @@ void draw() {
     // Center the Gml (shift by half width and half height
     translate(-gml.getCentroid().x*scaling, -gml.getCentroid().y*scaling);
     // Draw it
-    brushManager.draw(g, gml, scaling);
+    brushManager.draw(gml, scaling);
   }
   else {
     // Display a loading message

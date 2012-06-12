@@ -34,7 +34,7 @@ public class GmlRecorder {
 	/**
 	 * Creates a new GmlRecorder using the given screen size, minimum stroke length and minimum points distance
 	 * @param screen - Vec3D (srceen dimensions)
-	 * @param minStrokeLength - int (minimum no. of points for a stroke to be stored)
+	 * @param minStrokeLength - int (minimum length of the stroke)
 	 * @param minPointsDistance - flaot (minimum distance between two points of the same stroke)
 	 */
 	public GmlRecorder(final Vec3D screen, float minStrokeLength, float minPointsDistance) {
@@ -181,10 +181,12 @@ public class GmlRecorder {
 		LOGGER.debug("Add point");
 
 		// Check bounding box and do not add if outside
+		/*
 		if (!v.isInAABB(boundingBox)) {
 			LOGGER.warn("point skipped : v "+ v + " is outside "+ boundingBox);
 		}
 		else {
+		*/
 			v.scaleSelf(normalizer);
 			
 			// Check is sessionID exists (beginStroke has been called before)
@@ -205,7 +207,7 @@ public class GmlRecorder {
 					strokes.get(sessionID).addPoint(new GmlPoint(v, time, pressure, rotation, direction));
 				}
 			}
-		}
+		//}
 	}
 
 	/**
@@ -256,12 +258,16 @@ public class GmlRecorder {
 		return strokeList;
 	}
 	
+	// REMOVE LAST STROKE any layer
+	
 	/**
-	 * Returns a copy of the Gml
+	 * Returns a copy of the Gml including the strokes under drawing
 	 * @return Gml
 	 */
 	public Gml getGml() {
-		return gml.copy();
+		Gml gmlCopy = gml.copy();
+		gml.addStrokes(strokes.values());
+		return gmlCopy;
 	}
 
 	/**

@@ -1,6 +1,16 @@
+/**
+* GML4U library
+* Author Jerome Saint-Clair
+* http://saint-clair.net
+*
+* This example shows how to use the GmlRecorder to record 
+* and save GML from mouse coordinates
+*
+*/
+
 import org.apache.log4j.PropertyConfigurator;
 
-import gml4u.brushes.MeshDemo;
+import gml4u.brushes.CurvesDemo;
 import gml4u.drawing.GmlBrushManager;
 import gml4u.events.GmlEvent;
 import gml4u.events.GmlParsingEvent;
@@ -20,17 +30,17 @@ GmlSaver saver;
 GmlBrushManager brushManager;
 
 void setup() {
-  size(800, 600, P3D);
+  size(800, 600, P2D);
   PropertyConfigurator.configure(sketchPath+"/log4j.properties");
 
   // The recording area
-  Vec3D screen = new Vec3D(width, height, 0);
+  Vec3D screen = new Vec3D(width, height, 100);
   
   // Recorder
   recorder = new GmlRecorder(screen, 0.015f, 0.01f);
   
   // BrushManager: used to draw
-  brushManager = new GmlBrushManager();
+  brushManager = new GmlBrushManager(this);
   // Scale: used to scale back the Gml points to their original size
   scale = width;
 
@@ -54,7 +64,7 @@ void draw() {
   // the Gml returned by the recorder because we also want the strokes
   // being drawn
   for (GmlStroke stroke : recorder.getStrokes()) { 
-	brushManager.draw(g, stroke, scale);
+	brushManager.draw(stroke, scale);
   }
 }
 
@@ -87,7 +97,7 @@ void keyPressed() {
 void mousePressed() {
     // Start recording if not already
     GmlBrush brush = new GmlBrush();
-    brush.set(GmlBrush.UNIQUE_STYLE_ID, MeshDemo.ID);
+    brush.set(GmlBrush.UNIQUE_STYLE_ID, CurvesDemo.ID);
     recorder.beginStroke(0, 0, brush);
 }
 
@@ -95,8 +105,8 @@ void mousePressed() {
 // Called when mouse is moved with button pressed
 void mouseDragged() {
     // Get pointer coords as a xyz Vector between 0,0,0 and 1,1,1
-    Vec3D v = new Vec3D((float) mouseX/width, (float) mouseY/height, 0);
-    recorder.addPoint(0, v, 0.1);
+    Vec3D v = new Vec3D((float) mouseX/width, (float) mouseY/height, frameCount/3000);
+    recorder.addPoint(0, v, frameCount/3000);
 }
 
 // Called when mouse buttons are released
