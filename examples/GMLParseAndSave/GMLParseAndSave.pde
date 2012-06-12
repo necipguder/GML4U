@@ -59,7 +59,7 @@ void setup() {
   //parser.parseFolder(sketchPath);
 
   // Parsing using a list of files previously retrieved
-  List<String> files = FileUtils.scanFolder(sketchPath+"/vienna", "^.*(x|g)ml$"); // Gets a list of files with a xml or gml extension
+  List<String> files = FileUtils.scanFolder(sketchPath+"/others", "^.*(x|g)ml$"); // Gets a list of files with a xml or gml extension
   //parser.parseFiles(files, false); // Parses the files listed above (no normalization)
   parser.parseFiles(files); // Parses the files listed above
 
