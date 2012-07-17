@@ -91,7 +91,7 @@ public class MeshDemo extends GmlStrokeDrawer {
 
 				// add 2 faces to the mesh
 				mesh.addFace(p,b,q);
-				mesh.addFace(p, a, b);
+				mesh.addFace(p, b, a);
 
 				// store current points for next iteration
 				prev.set(pos);
