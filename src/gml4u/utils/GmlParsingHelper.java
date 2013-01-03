@@ -46,10 +46,50 @@ public class GmlParsingHelper {
 	 */
 	public static Gml getGml(String file, boolean normalize) {
 
-		LOGGER.debug("Parsing "+ file);
+		LOGGER.debug("Parsing from file: "+ file);
 
-		Gml gml = parseGml(file);
+		Gml gml = parseGml(file, true);
+		gml = cleanGml(gml, normalize);
+		
+		return gml;
 
+	}
+
+	/**
+	* Parses a Gml input String and normalizes it
+	* 
+	* @param inputString - String
+	* @return Gml
+	*/
+	public static Gml getGmlFromString(String inputString) {
+		return getGmlFromString(inputString, true);
+	}
+
+	/**
+	* Parses a Gml input String, and, if requested, does the appropriate<br/>
+	* normalisations to match the Gml 1.0 specs
+	* 
+	* @param inputString - String
+	* @param normalize - boolean
+	* @return Gml
+	*/
+	public static Gml getGmlFromString(String inputString, boolean normalize) {
+		LOGGER.debug("Parsing from String");
+		
+		Gml gml = parseGml(inputString, false);
+		gml = cleanGml(gml, normalize);
+		
+		return gml;
+	}
+
+	
+	/**
+	 * Cleans the GML and normalize it if specified
+	 * @param gml - Gml
+	 * @param normalize - boolean
+	 * @return Gml
+	 */
+	public static Gml cleanGml(Gml gml, boolean normalize) {
 		// Fix differences between the various Gml clients 
 		GmlHomogenizer.autoFix(gml);
 
@@ -76,20 +116,21 @@ public class GmlParsingHelper {
 		}
 		return gml;
 	}
-
+	
+	
 	/**
 	 * Parses a Gml file given its location without doing any normalization.
 	 * @param file - String
 	 * @return Gml
 	 */
 	@SuppressWarnings("unchecked")
-	public static Gml parseGml(String file) {
+	private static Gml parseGml(String input, boolean isFile) {
 		Gml gml = null;
 
 		// TODO xsd validation
 
 		// Get document
-		Document document = JDomParsingUtils.buildDocument(file);
+		Document document = getDocument(input, isFile);
 		String root = "/*[name()='GML' or name()='gml']";
 
 		// Get version
@@ -135,6 +176,24 @@ public class GmlParsingHelper {
 		gml.addStrokes(gmlStrokes);
 
 		return gml;
+	}
+
+	/**
+	 * Builds the XML Document based on the the input type (GML file or String)
+	 * @param input
+	 * @param fileInput
+	 * @return
+	 */
+	private static Document getDocument(String input, boolean fileInput){
+ 
+ 		// Get document
+		Document document = null;
+		if(fileInput){
+			document = JDomParsingUtils.buildDocument(input);
+		}else{
+			document = JDomParsingUtils.buildDocumentFromString(input);
+		}
+		return document;
 	}
 
 	/**
@@ -324,7 +383,7 @@ public class GmlParsingHelper {
 		point.rotation.set(dir);
 		
 		// Pressure
-		float presVal = 0;
+		float presVal = GmlPoint.DEFAULT_PRESSURE;
 		try {
 			Element pressure = element.getChild("pres");
 			if (null != pressure.getValue()) {
@@ -334,6 +393,18 @@ public class GmlParsingHelper {
 		catch (Exception ex) {
 		}
 		point.preasure = presVal ;
+
+		// Thickness
+		float thicknessVal = GmlPoint.DEFAULT_THICKNESS;
+		try {
+			Element thickness = element.getChild("thick");
+			if (null != thickness.getValue()) {
+				thicknessVal = Float.parseFloat(thickness.getValue());					
+			}
+		}
+		catch (Exception ex) {
+		}
+		point.thickness = thicknessVal ;
 		
 		return point;
 	}

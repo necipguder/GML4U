@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -77,7 +79,6 @@ public class GmlSavingHelper {
 		
 		LOGGER.debug("Start saving GML file to "+location);
 		
-
 		try {
 			// Make sure the folder exists
 			String folder = FileUtils.getFolder(location);
@@ -94,6 +95,30 @@ public class GmlSavingHelper {
 			LOGGER.error("Saving failed. Reason: parsing issue, "+ e.getMessage());
 		}
 		return false;
+	}
+	
+	/**
+	* Get the GML document as a String
+	*  
+	* 
+	* @param gml the GML to get the document string for
+	* @return the GML document as a String
+	*/
+	public static String getStringFromGml(Gml gml){
+		String gmlString = new String();
+		try {
+			Document document = createDocument(gml);
+			gmlString = XmlUtils.getString(document);
+		}
+		catch (ParserConfigurationException e) {
+			LOGGER.error("Getting GML document failed. Reason: parsing issue, "+ e.getMessage());
+		} catch (TransformerFactoryConfigurationError e) {
+			LOGGER.error("Getting GML document failed. Reason: transferfactoryconfiguration issue, "+ e.getMessage());
+		} catch (TransformerException e) {
+			LOGGER.error("Getting GML document failed. Reason: transformer issue, "+ e.getMessage());
+		}
+		
+		return gmlString;
 	}
 
 	/**
@@ -392,6 +417,13 @@ public class GmlSavingHelper {
 			pres.appendChild(document.createTextNode(""+point.preasure));
 			element.appendChild(pres);
 		}
+		// Thickness
+		if (0 != point.thickness) { // Optional
+			Element pres = document.createElement("thick");
+			pres.appendChild(document.createTextNode(""+point.thickness));
+			element.appendChild(pres);
+		}
+
 		return element;
 	}
 	
