@@ -1,6 +1,7 @@
 package gml4u.utils;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -31,6 +32,25 @@ public class JDomParsingUtils {
 		}
 		return null;
 	}
+	
+	/**
+	* Builds a document based on the provided string which contains a XML document
+	* @param inputString - String
+	* @return Document
+	*/
+	public static Document buildDocumentFromString(String inputString){
+		try {
+			SAXBuilder saxBuilder = new SAXBuilder("org.apache.xerces.parsers.SAXParser");
+			Document document = saxBuilder.build(new StringReader(inputString));
+			return document;
+		}
+		catch (IOException e) {
+			LOGGER.warn(e.getMessage());
+		} catch (JDOMException e) {
+			LOGGER.warn(e.getMessage());
+		}
+		return null;
+	}	
 	
 	/**
 	 * Returns a single element of node based on a document and XPath expression
