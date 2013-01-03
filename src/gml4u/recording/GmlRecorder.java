@@ -163,9 +163,10 @@ public class GmlRecorder {
 	 * @param time - float
 	 */
 	public void addPoint(int sessionID, Vec3D v, final float time) {
-		addPoint(sessionID, v, time, 1, new Vec3D(), new Vec3D());
+		addPoint(sessionID, v, time, GmlPoint.DEFAULT_PRESSURE, new Vec3D(), new Vec3D());
 	}
 
+	
 	/**
 	 * Adds a new point to a stroke
 	 * The point's coordinates shall be within 0-1 on every axis.
@@ -178,6 +179,22 @@ public class GmlRecorder {
 	 * @param direction - Vec3D
 	 */
 	public void addPoint(int sessionID, Vec3D v, final float time, final float pressure, final Vec3D rotation, final Vec3D direction) {
+		addPoint(sessionID, v, time, pressure, rotation, direction, GmlPoint.DEFAULT_THICKNESS);
+	}
+	
+	/**
+	 * Adds a new point to a stroke
+	 * The point's coordinates shall be within 0-1 on every axis.
+	 * They'll be scaled automatically according to the screen's ratio
+	 * @param sessionID - int
+	 * @param v - Vec3D vetor (shall be within AABB (0,0,0) -> (1,1,1))
+	 * @param time - float
+	 * @param pressure - float
+	 * @param rotation - Vec3D
+	 * @param direction - Vec3D
+	 * @param thickness - float
+	 */
+	public void addPoint(int sessionID, Vec3D v, final float time, final float pressure, final Vec3D rotation, final Vec3D direction, float thickness) {
 		LOGGER.debug("Add point");
 
 		// Check bounding box and do not add if outside
@@ -197,14 +214,14 @@ public class GmlRecorder {
 					GmlPoint prev = new GmlPoint();
 					prev.set(strokes.get(sessionID).getLastPoint());
 					if (prev.distanceTo(v) > minPointsDistance) {
-						strokes.get(sessionID).addPoint(new GmlPoint(v, time, pressure, rotation, direction));
+						strokes.get(sessionID).addPoint(new GmlPoint(v, time, pressure, rotation, direction, thickness));
 					}
 					else {
 						LOGGER.debug("Skipped, too close from previous point: "+prev.distanceTo(v));
 					}
 				}
 				else { // First point, add it
-					strokes.get(sessionID).addPoint(new GmlPoint(v, time, pressure, rotation, direction));
+					strokes.get(sessionID).addPoint(new GmlPoint(v, time, pressure, rotation, direction, thickness));
 				}
 			}
 		//}

@@ -11,10 +11,10 @@ public class GmlPoint extends Vec3D {
 	public Vec3D rotation;
 	public Vec3D direction;
 	public float preasure;
-	public float length;
+	public float thickness;
 
 	public static float DEFAULT_PRESSURE = 1;
-	public static float DEFAULT_LENGTH = 1;
+	public static float DEFAULT_THICKNESS = 0.01f;
 	
 	/**
 	 * Creates a new GmlPoint
@@ -46,7 +46,7 @@ public class GmlPoint extends Vec3D {
 		this.preasure = pressure;
 		this.rotation = new Vec3D(rotation);
 		this.direction = new Vec3D(direction);
-		this.length = DEFAULT_LENGTH;
+		this.thickness = DEFAULT_THICKNESS;
 	}
 	
 	/**
@@ -56,15 +56,15 @@ public class GmlPoint extends Vec3D {
 	 * @param pressure - float
 	 * @param rotation - Vec3D
 	 * @param direction - Vec3D
-	 * @param length - float
+	 * @param thickness - float
 	 */
-	public GmlPoint(Vec3D v, float time, float pressure, Vec3D rotation, Vec3D direction, float length) {
+	public GmlPoint(Vec3D v, float time, float pressure, Vec3D rotation, Vec3D direction, float thickness) {
 		super(v);
 		this.time = time;
 		this.preasure = pressure;
 		this.rotation = new Vec3D(rotation);
 		this.direction = new Vec3D(direction);
-		this.length = length;
+		this.thickness = thickness;
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class GmlPoint extends Vec3D {
 		this.preasure = point.preasure;
 		this.rotation = new Vec3D(point.rotation);
 		this.direction = new Vec3D(point.direction);
-		this.length = point.length;
+		this.thickness = point.thickness;
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class GmlPoint extends Vec3D {
 		this.preasure = point.preasure;
 		this.rotation = new Vec3D(point.rotation);
 		this.direction = new Vec3D(point.direction);
-		this.length = point.length;
+		this.thickness = point.thickness;
 	}
 	
 	/**
@@ -98,6 +98,6 @@ public class GmlPoint extends Vec3D {
 	 * @return String
 	 */
 	public String toString() {
-		return "v"+super.toString()+" time {"+time+"} preasure {"+preasure+"} rotation {"+rotation+"} direction {"+direction+"} length {"+length+"}";
+		return "v"+super.toString()+" time {"+time+"} preasure {"+preasure+"} rotation {"+rotation+"} direction {"+direction+"} thickness {"+thickness+"}";
 	}
 }
