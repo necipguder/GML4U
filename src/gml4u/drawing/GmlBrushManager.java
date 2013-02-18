@@ -4,8 +4,10 @@ import gml4u.brushes.BoxesDemo;
 import gml4u.brushes.CurvesDemo;
 import gml4u.brushes.MeshDemo;
 import gml4u.model.Gml;
+import gml4u.model.GmlBrush;
 import gml4u.model.GmlStroke;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -444,6 +446,12 @@ public class GmlBrushManager {
 			drawer = defaultId;
 		}
 		g.pushStyle();
+		Color c = stroke.getBrush().getColor(GmlBrush.COLOR);
+		if (null == c) {
+			c = Color.GREEN;
+		}
+		g.fill(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+		g.stroke(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
 		drawers.get(drawer).draw(g, stroke, scale, timeStart, timeEnd);
 		g.popStyle();
 	}
