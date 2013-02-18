@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import toxi.geom.AABB;
+import toxi.geom.Vec2D;
 import toxi.geom.Vec3D;
 
 public class GmlUtils {
@@ -297,6 +298,24 @@ public class GmlUtils {
 		}
 	}
 
+	/**
+	 * Returns true if the GML is landscape oriented (wider than high)
+	 * Takes the GML orientation into account (the Z axis is not taken into account)
+	 * @param gml
+	 * @return
+	 */
+	public static boolean isLandscapeOriented(Gml gml) {
+		Vec3D up = new Vec3D(gml.environment.up);
+		Vec2D boundingRect = gml.getBoundingRect();
+		if (boundingRect.x > boundingRect.y) {
+			return Math.abs(up.y) == 1 ? true : false;
+		}
+		else {
+			return Math.abs(up.y) == 1 ? false : true;
+		}
+
+	}
+	
 	// TODO stats() get all info about the drawing
 
 }
