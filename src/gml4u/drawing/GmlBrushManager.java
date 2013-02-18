@@ -25,16 +25,13 @@ public class GmlBrushManager {
 	public static final String BRUSH_DEFAULT = CurvesDemo.ID;
 	
 	private String defaultId;
-	private String defaultBgId;
 	private PApplet parent = null;
 	
 	private Map<String, GmlStrokeDrawer> drawers = new HashMap<String, GmlStrokeDrawer>();
-	private Map<String, GmlBackground> backgrounds = new HashMap<String, GmlBackground>();
 	
 	private static final String MISSING_PAPPLET =  "No PApplet passed to the GmlBrushManager. Use \"new GmlBrushManager(this);\" as a constructor";
 	private static final String UNKNOWN_DRAWER = "Unknow drawer or no drawer found, using default instead";
 	private static final String STYLE_NOT_FOUND = "Style not found, default style wasn't changed";
-	private static final String BACKGROUND_NOT_FOUND = "Background not found, default background wasn't changed";
 	private static final String DEFAULT_WASNT_CHANGED = "Returning default";
 	private static final String RETURNING_DEFAULT = "Returning default";
 	private static final String USING_DEFAULT = "Using default";
@@ -44,7 +41,6 @@ public class GmlBrushManager {
 	private static final String NULL_STROKE = "GmlStroke is null";
 	private static final String NO_BRUSH = "GmlStroke has no GmlBrush";
 	private static final String CANNOT_REMOVE_DEFAULT_STYLE = "Cannot remove a style when used as default style";
-	private static final String CANNOT_REMOVE_DEFAULT_BACKGROUND = "Cannot remove a background when used as default style";
 	
 	/**
 	 * GmlBrushManager constructor
@@ -60,7 +56,6 @@ public class GmlBrushManager {
 		this.parent = p;
 		init();
 	}
-	
 	
 	/**
 	 * Init with default styles and sets defaultStyle
@@ -158,7 +153,6 @@ public class GmlBrushManager {
 		return keys.get(index);
 	}
 	
-	
 	/**
 	 * Adds a new stroke drawer.
 	 * If another drawer with the same name exists, it will be replaced.
@@ -199,130 +193,6 @@ public class GmlBrushManager {
 			LOGGER.warn(STYLE_NOT_FOUND + ": " +DEFAULT_WASNT_CHANGED);
 		}
 	}
-	
-	/**
-	 * Sets the default background
-	 * @param background - GmlBackground
-	 */
-	public void setDefaultBackground(GmlBackground background) {
-		add(background);
-		setDefaultBackground(background.getId());
-	}
-	
-	/**
-	 * Sets the default background based on his background ID (if already exists)
-	 * @param backgroundId - String
-	 */
-	public void setDefaultBackground(String backgroundId) {
-		if (drawers.containsKey(backgroundId)) {
-			defaultId = backgroundId;
-		}
-		else {
-			LOGGER.warn(BACKGROUND_NOT_FOUND);
-		}
-	}
-
-	/**
-	 * Gets all backgrounds' Ids as a Collection
-	 * @return Collection<String>
-	 */
-	public Collection<String> getBackgrounds() {
-		Collection<String> bgs = new ArrayList<String>();
-		bgs.addAll(this.backgrounds.keySet());
-		return bgs;
-	}
-	
-	/**
-	 * Returns the amount of backgrounds registered
-	 * @return int
-	 */
-	public int backgroundsSize() {
-		return backgrounds.size();
-	}
-	
-	/**
-	 * Gets a background from its index
-	 * @param index - int
-	 * @return GmlBackground
-	 */
-	public GmlBackground getBackground(int index) {
-		if (null == backgrounds.get(index)) {
-			LOGGER.warn(BACKGROUND_NOT_FOUND + " : " +RETURNING_DEFAULT);
-			return backgrounds.get(defaultBgId);
-		}
-		return backgrounds.get(index);
-	}
-	
-	/**
-	 * Gets a background from its name
-	 * @param styleId - String
-	 * @return backgroundId
-	 */
-	public GmlBackground getBackground(String backgroundId) {
-		if (null == backgrounds.get(backgroundId)) {
-			LOGGER.warn(BACKGROUND_NOT_FOUND + " : " +RETURNING_DEFAULT);
-			return backgrounds.get(defaultId);
-		}
-		return backgrounds.get(backgroundId);
-	}
-	
-	/**
-	 * Gets a background id from its index
-	 * @param index - int
-	 * @return String
-	 */
-	public String getBackgroundID(int index) {
-		if (index < 0 || index > backgrounds.size()-1) {
-			LOGGER.warn(BACKGROUND_NOT_FOUND + " : " + USING_DEFAULT);
-			return defaultBgId;
-		}
-		ArrayList<String> keys = new ArrayList<String>();
-		keys.addAll(backgrounds.keySet());
-		return keys.get(index);
-	}
-	
-	
-	/**
-	 * Adds a new background
-	 * If another drawer with the same name exists, it will be replaced.
-	 * @param drawer - GmlStrokeDrawer
-	 */
-	public void add(GmlBackground background) {
-		if (null != backgrounds.get(background.getId())) {
-			LOGGER.warn("Replacing existing drawer with the same name: "+ background.getId());
-		}
-		backgrounds.put(background.getId(), background);		
-	}
-	
-	/**
-	 * Adds a new stroke drawer and changes its ID in the same time
-	 * @param id - String
-	 * @param drawer - GmlStrokeDrawer
-	 */
-	public void add(String id, GmlBackground background) {
-		background.setId(id);
-		add(background);
-	}
-	
-	/**
-	 * Removes a stroke drawer based on its id
-	 * If this style is the default one, it won't be removed and you'll need to set another default one
-	 * @param styleId - String
-	 */
-	public void removeBackground(String backgroundId) {
-		if (backgrounds.containsKey(backgroundId)) {
-			if (!defaultBgId.equals(backgroundId)) {
-				backgrounds.remove(backgroundId);
-			}
-			else {
-				LOGGER.warn(CANNOT_REMOVE_DEFAULT_BACKGROUND);
-			}
-		}
-		else {
-			LOGGER.warn(BACKGROUND_NOT_FOUND);
-		}
-	}
-	
 	
 	/**
 	 * Draws each stroke according to its brush type
