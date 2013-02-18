@@ -126,8 +126,10 @@ public class GmlParsingHelper {
 	@SuppressWarnings("unchecked")
 	private static Gml parseGml(String input, boolean isFile) {
 		Gml gml = null;
+		
+		// TODO return null if the gml is a file and its path or type is incorrect
 
-		// TODO xsd validation
+		// TODO xsd validation ???
 
 		// Get document
 		Document document = getDocument(input, isFile);
