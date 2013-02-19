@@ -468,32 +468,32 @@ public class GmlParsingHelper {
 	 * @param elements - List<Element>
 	 * @return Color
 	 */
-	private static Color getGmlColor(List<Element> elements) {
+	private static Integer getGmlColor(List<Element> elements) {
 		
-		float red = 0;
-		float green = 0;
-		float blue = 0;
-		float alpha = 0;
+		int red = 0;
+		int green = 255;
+		int blue = 0;
+		int alpha = 255;
 		
 		for (Element e : elements) {
 			String name = e.getName();
 			String value = e.getValue();
 
 			if (name.equalsIgnoreCase("r")) {
-				red = Float.parseFloat(value)*255;
+				red = Integer.parseInt(value);
 			}
 			else if (name.equalsIgnoreCase("g")) {
-				green = Float.parseFloat(value)*255;
+				green = Integer.parseInt(value);
 			}
 			else if (name.equalsIgnoreCase("b")) {
-				blue = Float.parseFloat(value)*255;
+				blue = Integer.parseInt(value);
 			}
 			else if (name.equalsIgnoreCase("a")) {
-				alpha = Float.parseFloat(value)*255;
+				alpha = Integer.parseInt(value);
 			}
 		}
 		
-		Color color = new Color(red, green, blue, alpha);
+		Integer color = (alpha << 24) | (red << 16) | (green << 8) | blue;
 		return color;
 	}
 
@@ -586,7 +586,7 @@ public class GmlParsingHelper {
 				return v;
 			}
 			else if (isColor((List<Element>) element.getChildren())) {
-				Color c = getGmlColor((List<Element>) element.getChildren());
+				Integer c = getGmlColor((List<Element>) element.getChildren());
 				return c;
 			}
 			else if (isLocation((List<Element>) element.getChildren())) {

@@ -316,12 +316,13 @@ public class GmlBrushManager {
 			drawer = defaultId;
 		}
 		g.pushStyle();
-		Color c = stroke.getBrush().getColor(GmlBrush.COLOR);
+		Integer c = stroke.getBrush().getColor(GmlBrush.COLOR);
 		if (null == c) {
-			c = Color.GREEN;
+			LOGGER.warn("No color defined, using default (green)");
+			c = (255 << 24) | (0 << 16) | (255 << 8) | 0;
 		}
-		g.fill(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-		g.stroke(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+		g.fill(c);
+		g.stroke(c);
 		drawers.get(drawer).draw(g, stroke, scale, timeStart, timeEnd);
 		g.popStyle();
 	}

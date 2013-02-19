@@ -431,26 +431,30 @@ public class GmlSavingHelper {
 	 * Creates a Color element
 	 * @param document - Document
 	 * @param name - String
-	 * @param c - Color
+	 * @param c - int
 	 * @return Element
 	 */
-	private static Element createColorElement(Document document, String name, Color c) {
+	private static Element createColorElement(Document document, String name, int c) {
 		Element element = document.createElement(name);
 
 		Element r = document.createElement("r");
-		r.appendChild(document.createTextNode(""+c.getRed()));
+		int red = (c >> 16) & 0xFF;
+		r.appendChild(document.createTextNode(""+red));
 		element.appendChild(r);
 		
 		Element g = document.createElement("g");
-		g.appendChild(document.createTextNode(""+c.getGreen()));
+		int green = (c >> 8)  & 0xFF; 
+		g.appendChild(document.createTextNode(""+green));
 		element.appendChild(g);
 		
 		Element b = document.createElement("b");
-		b.appendChild(document.createTextNode(""+c.getBlue()));
+		int blue = c & 0xFF;
+		b.appendChild(document.createTextNode(""+blue));
 		element.appendChild(b);
-		
+
 		Element a = document.createElement("a");
-		a.appendChild(document.createTextNode(""+c.getAlpha()));
+		int alpha = (c >> 24) & 0xFF;
+		a.appendChild(document.createTextNode(""+alpha));
 		element.appendChild(a);
 
 		return element;
@@ -475,8 +479,8 @@ public class GmlSavingHelper {
 				child = document.createElement(key);
 				child.appendChild(document.createTextNode(""+(Float) o));
 			}
-			else if (o instanceof Color) {
-				child = createColorElement(document, key, (Color) o); 				
+			else if (key.indexOf("color") > -1) {
+				child = createColorElement(document, key, (Integer) o); 				
 			}
 			else if (o instanceof GmlLocation) {
 				child = createLocationElement(document, key, (GmlLocation) o); 				

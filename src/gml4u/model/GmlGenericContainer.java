@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import processing.core.PApplet;
+
 import toxi.geom.Vec3D;
 
 public abstract class GmlGenericContainer {
@@ -152,9 +154,9 @@ public abstract class GmlGenericContainer {
 	 * @param param - String
 	 * @return Color
 	 */
-	public final Color getColor(String param) {
+	public final Integer getColor(String param) {
 		try {
-			Color c = (Color) map.get(param);
+			int c = (Integer) map.get(param);
 			return c;
 		}
 		catch (Exception e) {
