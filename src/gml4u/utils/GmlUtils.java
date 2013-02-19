@@ -245,7 +245,7 @@ public class GmlUtils {
 	/**
 	 * Makes the Gml fit into a certain duration.<br>
 	 * If the <i>keepRatio</i> parameter is true or if the original duration
-	 * is zero, then time is split accross all layers, strokes and points.<br/>
+	 * is zero, then time is split across all layers, strokes and points.<br/>
 	 * If not forced and if the original duration is not zero, then the
 	 * time is mapped by keeping the original interval ratio between each point.
 	 *
