@@ -64,6 +64,14 @@ public class GmlRecorder {
 	}
 	
 	/**
+	 * Returns the normalizer used to scale points
+	 * @return
+	 */
+	public Vec3D getNormalizer() {
+		return new Vec3D(normalizer);
+	}
+	
+	/**
 	 * Sets the client information to be used. Overrides the default values 
 	 * @param client - GmlClient
 	 */
@@ -75,11 +83,27 @@ public class GmlRecorder {
 	// Also resets the screen and normalizer values
 	
 	/**
+	 * Returns the minimum stroke length
+	 * @return
+	 */
+	public float getMinStrokeLength() {
+		return minStrokeLength;
+	}
+
+	/**
 	 * Sets the min stroke length. If smaller, a stroke won't be added
 	 * @param length - float
 	 */
 	public void setMinStrokeLength(float length) {
 		this.minStrokeLength = length;
+	}
+
+	/**
+	 * Returns the minimum point distance
+	 * @return
+	 */
+	public float getMinPointDistance() {
+		return minPointsDistance;
 	}
 
 	/**
