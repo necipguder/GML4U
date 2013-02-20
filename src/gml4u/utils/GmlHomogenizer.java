@@ -64,7 +64,7 @@ public class GmlHomogenizer {
 		-> Except z is fucked
 		*/
 
-		else if (CLIENT_GRAFANALYSIS.equalsIgnoreCase(client)) {
+		else if (client.indexOf(CLIENT_GRAFANALYSIS) > -1) {
 			
 			// Reduce z
 			// Normalize
@@ -74,13 +74,13 @@ public class GmlHomogenizer {
 			Vec3D screenScale = Vec3DUtils.getNormalized(gml.environment.screenBounds);			
 			AABB boundingBox = gml.getBoundingBox();
 						
-			// Remap all points' z coords accordingly
+			// Remap all points' z coords so they fit between 0 and 0.25
 			// Might not be super accurate but good enough
 			List<GmlStroke> strokes = (List<GmlStroke>) gml.getStrokes();
 			for (GmlStroke stroke : strokes) {
 				List<GmlPoint> points = stroke.getPoints();
 				for(GmlPoint point: points) {
-					point.z = MappingUtils.map(point.z, boundingBox.getMin().z, boundingBox.getMax().z, 0, screenScale.z);
+					point.z = MappingUtils.map(point.z, boundingBox.getMin().z, boundingBox.getMax().z, 0, .25f);
 					if (point.z != point.z) point.z = 0;
 				}
 				stroke.replacePoints(points);
