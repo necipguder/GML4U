@@ -160,7 +160,7 @@ public abstract class GmlGenericContainer {
 			return c;
 		}
 		catch (Exception e) {
-			LOGGER.warn("Returning null. Reason: "+ param +" value is not a Color");
+			LOGGER.info("Returning null. Reason: "+ param +" value is not a Color");
 			return null;
 		}
 	}

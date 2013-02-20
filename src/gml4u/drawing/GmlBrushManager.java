@@ -318,7 +318,7 @@ public class GmlBrushManager {
 		g.pushStyle();
 		Integer c = stroke.getBrush().getColor(GmlBrush.COLOR);
 		if (null == c) {
-			LOGGER.warn("No color defined, using default (green)");
+			LOGGER.info("No color defined, using default (green)");
 			c = (255 << 24) | (0 << 16) | (255 << 8) | 0;
 		}
 		g.fill(c);
