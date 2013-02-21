@@ -30,10 +30,11 @@ public class Timer {
 	}
 	
 	/**
-	 * Resets the time
+	 * Resets the timer
 	 */
 	public void reset() {
 		time = 0;
+		step = Math.abs(step);
 	}
 	
 	/**
