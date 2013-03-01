@@ -5,6 +5,7 @@ import gml4u.model.GmlPoint;
 import gml4u.model.GmlStroke;
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import toxi.geom.Vec3D;
 
 public class BoxesDemo extends GmlStrokeDrawer {
 	
@@ -24,8 +25,8 @@ public class BoxesDemo extends GmlStrokeDrawer {
 	 */
 	public void draw(PGraphics g, GmlStroke stroke, float scale, float minTime, float maxTime) {
 			
-		GmlPoint prev = new GmlPoint();
-		GmlPoint cur = new GmlPoint();
+		Vec3D prev = new GmlPoint();
+		Vec3D cur = new GmlPoint();
 						
 		for (GmlPoint point: stroke.getPoints()) {
 			if (point.time < minTime) continue;
@@ -34,7 +35,7 @@ public class BoxesDemo extends GmlStrokeDrawer {
 			if (prev.isZeroVector()) {
 				prev.set(point.scale(scale));
 			}
-			cur.set(point.scale(scale));
+			cur = point.scale(scale);
 			g.pushMatrix();
 			if (g.is3D()) {
 				g.translate(cur.x, cur.y, cur.z);
