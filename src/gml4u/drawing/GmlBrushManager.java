@@ -3,6 +3,9 @@ package gml4u.drawing;
 import gml4u.brushes.BoxesDemo;
 import gml4u.brushes.CurvesDemo;
 import gml4u.brushes.MeshDemo;
+import gml4u.brushes.RibbonDemo;
+import gml4u.brushes.StrokeFatDemo;
+import gml4u.brushes.TriangleDemo;
 import gml4u.model.Gml;
 import gml4u.model.GmlBrush;
 import gml4u.model.GmlStroke;
@@ -67,6 +70,12 @@ public class GmlBrushManager {
 		add(mesh);
 		GmlStrokeDrawer boxes = new BoxesDemo();
 		add(boxes);
+		GmlStrokeDrawer strokefat = new StrokeFatDemo();
+		add(strokefat);
+		GmlStrokeDrawer triangles = new TriangleDemo();
+		add(triangles);
+		GmlStrokeDrawer ribbon = new RibbonDemo();
+		add(ribbon);
 
 		defaultId = curve.getId();
 	}
