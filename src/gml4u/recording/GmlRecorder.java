@@ -65,7 +65,7 @@ public class GmlRecorder {
 	
 	/**
 	 * Returns the normalizer used to scale points
-	 * @return
+	 * @return Vec3D
 	 */
 	public Vec3D getNormalizer() {
 		return new Vec3D(normalizer);
@@ -84,7 +84,7 @@ public class GmlRecorder {
 	
 	/**
 	 * Returns the minimum stroke length
-	 * @return
+	 * @return float
 	 */
 	public float getMinStrokeLength() {
 		return minStrokeLength;
@@ -100,7 +100,7 @@ public class GmlRecorder {
 
 	/**
 	 * Returns the minimum point distance
-	 * @return
+	 * @return float
 	 */
 	public float getMinPointDistance() {
 		return minPointsDistance;

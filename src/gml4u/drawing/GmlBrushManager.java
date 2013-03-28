@@ -251,7 +251,6 @@ public class GmlBrushManager {
 	 * @param g - PGraphics
 	 * @param gml - Gml
 	 * @param scale - float
-	 * @param brush - GmlBrush
 	 * @param drawer - drawer id
 	 */
 	public void draw(PGraphics g, Gml gml, float scale, String drawer) {

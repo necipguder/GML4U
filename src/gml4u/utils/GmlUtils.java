@@ -302,7 +302,7 @@ public class GmlUtils {
 	 * Returns true if the GML is landscape oriented (wider than high)
 	 * Takes the GML orientation into account (the Z axis is not taken into account)
 	 * @param gml
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isLandscapeOriented(Gml gml) {
 		Vec3D up = new Vec3D(gml.environment.up);

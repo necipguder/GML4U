@@ -132,7 +132,6 @@ public class GmlParser extends Thread {
 	 * Parses a list of GML file using their given location and normalizes them.<br/>
 	 * Must be a local file <br/>
 	 * @param folder - String
-	 * @param normalize - boolean
 	 */
 	public void parseFolder(final String folder) {
 		parseFolder(folder, FileUtils.GML_FILE_REGEX, true);
@@ -178,7 +177,7 @@ public class GmlParser extends Thread {
 	 * Parses a GML file using its given location and normalizes it.<br/>
 	 * Can be local file or a http resources as well.<br/>
 	 * Note that you might need a local proxy to access extenal http resources when running inside an unsigned Applet 
-	 * @param fileList - String
+	 * @param file - String
 	 */
 	public void parse(final String file) {
 		parse(file, true);

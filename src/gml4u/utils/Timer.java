@@ -81,7 +81,7 @@ public class Timer {
 	
 	/**
 	 * Returns the interval used by tick()
-	 * @param step
+	 * @return float
 	 */
 	public float getStep() {
 		return step;

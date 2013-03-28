@@ -61,7 +61,7 @@ public class FileUtils {
 	
 	/**
 	 * Generates a random name for GML4U files
-	 * @return
+	 * @return String
 	 */
 	public static String generateRandomName() {
 		return "GML4U_"+UUID.randomUUID().toString()+".gml";
@@ -86,7 +86,7 @@ public class FileUtils {
 	 * Removes a filename from a full path and returns the folder path
 	 * Returns null if the path is incorrect
 	 * @param filePath
-	 * @return
+	 * @return String
 	 */
 	public static String getFolder(String filePath) {
 		String regex = "^(.*)/([^/]*)$";

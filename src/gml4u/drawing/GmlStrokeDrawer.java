@@ -38,7 +38,7 @@ public abstract class GmlStrokeDrawer {
 	
 	/**
 	 * Returns true if the drawer can draw in 3D
-	 * @return
+	 * @return boolean
 	 */
 	public boolean is3D() {
 		return is3D;
@@ -84,7 +84,7 @@ public abstract class GmlStrokeDrawer {
 	/**
 	 * Draws the Gml by scaling the points using the given scale 
 	 * @param g - PGraphics
-	 * @param gml - Gml
+	 * @param gmls - Gml
 	 * @param scale - float
 	 * @param minTime - float
 	 * @param maxTime - float

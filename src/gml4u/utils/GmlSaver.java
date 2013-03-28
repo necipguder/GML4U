@@ -99,7 +99,6 @@ public class GmlSaver extends Thread {
 	
 	/**
 	 * Saves a GML file to root of the sketch
-	 * @param location - String
 	 * @param gml - Gml
 	 */
 	public void save(Gml gml) {
@@ -123,7 +122,7 @@ public class GmlSaver extends Thread {
 	/**
 	 * Saves a list of GML file to the given folder using the filename stored in each Gml object
 	 * If the folder is not found, it will attempt to create it
-	 * @param gml - List<Gml>
+	 * @param gmlList - List<Gml>
 	 * @param folder - String
 	 */
 	public void save(List<Gml> gmlList, String folder) {
@@ -136,7 +135,7 @@ public class GmlSaver extends Thread {
 	/**
 	 * Saves GML files given a location for each file
 	 * If the folder is not found, it will attempt to create it
-	 * @param locations - Map<String, Gml>
+	 * @param gmlLocations - Map<String, Gml>
 	 */
 	public void save(Map<String, Gml> gmlLocations) {
 		LOGGER.debug("About to save "+gmlLocations.size() +" Gml files");

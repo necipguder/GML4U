@@ -52,7 +52,7 @@ public class Gml {
 	/**
 	 * Gets the filename set for this Gml
 	 * If not already set, a random one is automatically generated 
-	 * @return
+	 * @return String
 	 */
 	public String getFileName() {
 		String name = "";
