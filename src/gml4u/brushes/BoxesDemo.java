@@ -36,17 +36,20 @@ public class BoxesDemo extends GmlStrokeDrawer {
 				prev.set(point.scale(scale));
 			}
 			cur = point.scale(scale);
+			float dist = cur.distanceTo(prev);
+			dist = PApplet.constrain(dist, 1, 20);
+			
 			g.pushMatrix();
 			if (g.is3D()) {
 				g.translate(cur.x, cur.y, cur.z);
-				g.rotate(cur.distanceTo(prev));
-				g.box(cur.distanceTo(prev));
+				g.rotate(dist);
+				g.box(dist);
 			}
 			else {
 				g.translate(cur.x, cur.y);
-				g.rotate(cur.distanceTo(prev));
+				g.rotate(dist);
 				g.rectMode(PApplet.CENTER);
-				g.rect(0, 0, cur.distanceTo(prev), cur.distanceTo(prev));
+				g.rect(0, 0, dist, dist);
 			}
 			g.popMatrix();
 			prev.set(cur);

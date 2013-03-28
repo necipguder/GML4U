@@ -22,7 +22,34 @@ public class GmlPoint extends Vec3D {
 	public GmlPoint() {
 		this(new Vec3D(), 0);
 	}
+	
+	/**
+	 * Creates a new GmlPoint
+	 */
+	
+	public GmlPoint(float x, float y, float z, float t) {
+		this(new Vec3D(x, y, z), t);
+	
+	}
 
+	/**
+	 * Creates a new GmlPoint
+	 */
+	
+	public GmlPoint(float x, float y, float z) {
+		this(new Vec3D(x, y, z), 0);
+	
+	}
+
+	/**
+	 * Creates a new GmlPoint
+	 */
+	
+	public GmlPoint(float x, float y) {
+		this(new Vec3D(x, y, 0), 0);
+	
+	}
+	
 	/**
 	 * Creates a new GmlPoint using the given vector and time
 	 * @param v - Vec3D
