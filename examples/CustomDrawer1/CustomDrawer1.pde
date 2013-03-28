@@ -8,21 +8,6 @@
 *
 */
 
-
-import toxi.math.conversion.*;
-import toxi.geom.*;
-import toxi.math.*;
-import toxi.geom.mesh2d.*;
-import toxi.util.datatypes.*;
-import toxi.util.events.*;
-import toxi.geom.mesh.subdiv.*;
-import toxi.geom.mesh.*;
-import toxi.math.waves.*;
-import toxi.util.*;
-import toxi.math.noise.*;
-
-import org.apache.log4j.PropertyConfigurator;
-
 import gml4u.brushes.*;
 import gml4u.drawing.*;
 import gml4u.utils.*;
@@ -36,7 +21,6 @@ int timeMax = 30;
 
 void setup() {
   size(600, 400, P3D);
-  PropertyConfigurator.configure(sketchPath+"/log4j.properties");
    
   gml = GmlParsingHelper.getGml(sketchPath+"/sample.gml.xml", false);
   
@@ -45,16 +29,19 @@ void setup() {
 }
 
 void draw() {
+  //randomSeed(1);
+  
   background(0);
-    timer.tick();
+    timer.tick();  
     for (GmlStroke strok : gml.getStrokes()) {
       for (GmlPoint p : strok.getPoints()) {
         if (p.time > timer.getTime()) {
          continue; 
         }
-          Vec3D v = new Vec3D(p);
+          GmlPoint v = new GmlPoint(p);
           v.scaleSelf(width);
-          fill(random(255), random(255), random(255));
+          noStroke();
+          fill(random(255), random(255), random(255), 200);
           ellipse(v.x, v.y, random(10,20), random(10, 20));
       }
     }

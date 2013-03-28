@@ -7,15 +7,13 @@
 *
 */
 
-
-import org.apache.log4j.PropertyConfigurator;
-
 import gml4u.brushes.*;
 import gml4u.recording.*;
 import gml4u.utils.*;
 import gml4u.drawing.*;
 import gml4u.events.*;
 import gml4u.model.*;
+import java.util.*;
 
 // Declare a Gml object and GmlMultiParser
 ArrayList<Gml> gmls = new ArrayList<Gml>();
@@ -33,10 +31,7 @@ void setup() {
   size(600, 400, P2D);
   smooth();
   textAlign(CENTER, CENTER);
-  
-  // GML4U configuration (set Logging level)
-  PropertyConfigurator.configure(sketchPath+"/log4j.properties");
-  
+    
   // Create and start the thread with a 500ms waiting time, a name and a reference to your sketch (this)
   parser = new GmlParser(500, "GmlParser", this);
   saver = new GmlSaver(500, "GmlSaver", this);
@@ -44,11 +39,11 @@ void setup() {
   // NOTE you can comment / uncomment the lines below to test the different parsing methods
 
   // Parsing without using a thread
-  //Gml gml1 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml", false); // Parsing (no normalisation)
-  //gmls.add(gml1); // Add it to the gml list
+  Gml gml1 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml", false); // Parsing (no normalisation)
+  gmls.add(gml1); // Add it to the gml list
 
-  //Gml gml2 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml");
-  //gmls.add(gml2); // Add it to the gml list
+  Gml gml2 = GmlParsingHelper.getGml(sketchPath+"/17364.gml.xml");
+  gmls.add(gml2); // Add it to the gml list
 
   // Parsing using a thread (GmlParser)
 
@@ -59,9 +54,9 @@ void setup() {
   //parser.parseFolder(sketchPath);
 
   // Parsing using a list of files previously retrieved
-  List<String> files = FileUtils.scanFolder(sketchPath+"/others", "^.*(x|g)ml$"); // Gets a list of files with a xml or gml extension
+  //List<String> files = FileUtils.scanFolder(sketchPath+"/others", "^.*(x|g)ml$"); // Gets a list of files with a xml or gml extension
   //parser.parseFiles(files, false); // Parses the files listed above (no normalization)
-  parser.parseFiles(files); // Parses the files listed above
+  //parser.parseFiles(files); // Parses the files listed above
 
   // Parsing a single file
   //List<String> files = FileUtils.scanFolder(sketchPath+"others", "^.*gml$");  // Gets a list of files with a gml extension
@@ -98,10 +93,10 @@ public void keyPressed() {
 
   // Forward or backward loop through Gml files stored
   if (gmls.size() > 0) {
-    if (key == 'n' || key == 'N') {
+    if (keyCode == RIGHT) {
       current = ++current%gmls.size();
     }
-    else if (key == 'p' || key == 'P') {
+    else if (keyCode == LEFT) {
       current = current == 0 ? gmls.size()-1 : --current;
     }
   }

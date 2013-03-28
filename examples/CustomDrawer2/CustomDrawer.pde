@@ -1,44 +1,33 @@
-class CustomDrawer extends GmlStrokeDrawer {
+class CustomDrawer extends GmlStrokeDrawerBasic {
 
- public static final String ID = "My Custom Brush";
-  
+  public static final String ID = "My Custom Brush";
+
   public CustomDrawer() {
     super(ID);
     is3D(true);
   }
 
   /**
-  * Implementation of the abstract method defined in GmlStrokeDrawer
-  */
-   void draw(PGraphics g, GmlStroke stroke, float scale, float minTime, float maxTime) {
+   * Implementation of the abstract method defined in GmlStrokeDrawerBasic
+   */
+  void draw (PGraphics g, GmlPoint prev, GmlPoint cur) {
+    g.pushMatrix();
     
-    g.pushStyle();
-    g.fill(255);
-    g.stroke(0);
-    float rot = 0;
-    for (GmlPoint point : stroke.getPoints()) {
-      if (point.time < minTime) continue;
-      if (point.time > maxTime) break;
+    float dist = cur.distanceTo(prev); 
+    
+    g.translate(cur.x, cur.y);
+    g.rotate(dist);
 
-      Vec3D v = point.scale(scale);
-      g.pushMatrix();
-      if (g.is3D()) {
-        g.translate(v.x, v.y, v.z);
-        g.rotate(rot+=.01);
-        g.fill(random(255));
-        g.box(10);
-      }
-      else {
-        g.translate(v.x, v.y);
-        g.rotate(rot+=.01);
-        g.fill(random(255));
-        g.rect(-10, -10, 10, 10);
-      }
-      g.popMatrix();
+    g.noStroke();
+    g.fill(random(255));
+    
+    if (g.is3D()) {
+      g.box(dist);
     }
-    g.popStyle();
+    else {
+      g.ellipse(0, 0, dist, dist);
+    }
+    g.popMatrix();
   }
-
-
 }
 

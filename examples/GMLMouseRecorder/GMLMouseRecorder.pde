@@ -8,19 +8,14 @@
 *
 */
 
-import org.apache.log4j.PropertyConfigurator;
+import gml4u.brushes.*;
+import gml4u.recording.*;
+import gml4u.test.*;
+import gml4u.utils.*;
+import gml4u.drawing.*;
+import gml4u.events.*;
+import gml4u.model.*;
 
-import gml4u.brushes.CurvesDemo;
-import gml4u.drawing.GmlBrushManager;
-import gml4u.events.GmlEvent;
-import gml4u.events.GmlParsingEvent;
-import gml4u.model.GmlBrush;
-import gml4u.model.GmlConstants;
-import gml4u.model.GmlStroke;
-import gml4u.model.Gml;
-import gml4u.recording.GmlRecorder;
-import gml4u.utils.GmlParser;
-import gml4u.utils.GmlSaver;
 import toxi.geom.Vec3D;
 
 float scale;
@@ -30,8 +25,8 @@ GmlSaver saver;
 GmlBrushManager brushManager;
 
 void setup() {
-  size(800, 600, P2D);
-  PropertyConfigurator.configure(sketchPath+"/log4j.properties");
+  size(800, 600, P3D);
+  frameRate(25);
 
   // The recording area
   Vec3D screen = new Vec3D(width, height, 100);
@@ -60,12 +55,14 @@ void draw() {
 
   stroke(0, 30);
   fill(0, 30);
+  
   // Here, we use the strokes handled by the recorder rather than
   // the Gml returned by the recorder because we also want the strokes
-  // being drawn
+  // being drawn  
   for (GmlStroke stroke : recorder.getStrokes()) { 
 	brushManager.draw(stroke, scale);
   }
+  
 }
 
 // Callback method

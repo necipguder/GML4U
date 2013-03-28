@@ -1,14 +1,13 @@
 /**
- * GML4U library
- * Author Jerome Saint-Clair
- * http://saint-clair.net
- *
- * This example shows how to create a custom style and
- * add it to the GmlBrushManager to draw GML with your
- * own custom style
- *
- */
-
+* GML4U library
+* Author Jerome Saint-Clair
+* http://saint-clair.net
+*
+* This example shows how to create a custom style and
+* add it to the GmlBrushManager to draw GML with your
+* own custom style
+*
+*/
 
 import gml4u.brushes.*;
 import gml4u.drawing.*;
@@ -24,18 +23,19 @@ int timeMax = 30;
 
 void setup() {
   size(600, 400, P3D);
-
+   
   gml = GmlParsingHelper.getGml(sketchPath+"/sample.gml.xml", false);
-
+  
   brushManager.add(new CustomDrawer());
-
+  
   GmlUtils.timeBox(gml, timeMax, true);
   timer.start();
 }
 
 void draw() {
   background(0);
-  timer.tick();
-  brushManager.draw(gml, 600, timer.getTime(), CustomDrawer.ID);
+    timer.tick();
+    for (GmlStroke strok : gml.getStrokes()) {
+      brushManager.draw(strok, 600, timer.getTime(), CustomDrawer.ID);
+    }
 }
-

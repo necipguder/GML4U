@@ -18,9 +18,6 @@
 *
 */
 
-import org.apache.log4j.PropertyConfigurator;
-
-import processing.opengl.*;
 
 import TUIO.*;
 
@@ -50,7 +47,6 @@ public TuioProcessing tuioClient;
 
 void setup() {
   size(800, 600, OPENGL);
-  PropertyConfigurator.configure(sketchPath+"/log4j.properties");
 
   // TUIO Client, listening on port 3333
   tuioClient = new TuioProcessing(this, 3333);

@@ -19,22 +19,17 @@
 * http://hexler.net/touchosc
 */
 
-import org.apache.log4j.PropertyConfigurator;
-
 import oscP5.*;
 import netP5.*;
 
-import gml4u.brushes.MeshDemo;
-import gml4u.drawing.GmlBrushManager;
-import gml4u.events.GmlEvent;
-import gml4u.events.GmlParsingEvent;
-import gml4u.model.GmlBrush;
-import gml4u.model.GmlConstants;
-import gml4u.model.GmlStroke;
-import gml4u.model.Gml;
-import gml4u.recording.GmlRecorder;
-import gml4u.utils.GmlParser;
-import gml4u.utils.GmlSaver;
+import gml4u.brushes.*;
+import gml4u.recording.*;
+import gml4u.test.*;
+import gml4u.utils.*;
+import gml4u.drawing.*;
+import gml4u.events.*;
+import gml4u.model.*;
+
 
 import toxi.geom.Vec3D;
 
@@ -48,14 +43,17 @@ Vec3D screen;
 OscP5 oscP5;
 boolean isRecording;
 
+float start = millis();
+float last = millis();
+float resetDelay = 500;
+
 
 void setup() {
   size(800, 600, P3D);
   //xyRatio = height/width;
-  PropertyConfigurator.configure(sketchPath+"/log4j.properties");
 
-  // OSC Client, listening on port 3333
-  oscP5 = new OscP5(this, 3333);
+  // OSC Client, listening on port 4444
+  oscP5 = new OscP5(this, 4444);
 
 
   // The recording area
@@ -77,11 +75,10 @@ void setup() {
   
   // Start recording by default
   GmlBrush brush = new GmlBrush();
-  brush.set(GmlBrush.UNIQUE_STYLE_ID, MeshDemo.ID);
+  brush.set(GmlBrush.UNIQUE_STYLE_ID, BoxesDemo.ID);
   recorder.beginStroke(0, 0, brush);
   isRecording = true;
 
-  
 }
 
 
@@ -100,6 +97,13 @@ void draw() {
   for (GmlStroke gmlStroke : recorder.getStrokes()) { 
 	brushManager.draw(g, gmlStroke, gmlScale);
   }
+  
+    // Check if timer has to be reset
+  if (last + resetDelay < millis()) {
+    recorder.endStroke(0);
+    isRecording = false;
+  }
+
 }
 
 
@@ -138,30 +142,23 @@ void oscEvent(OscMessage message) {
   // Events below are mapped for TouchOSC, Simple layout, 3rd tab
   // Use any of the toggle buttons to start/stop stroke recording
 
-  String addr = message.addrPattern();
+  String pattern = message.addrPattern();
   
-  // If toggle buttons, then switch recording on/off
-  if (addr.indexOf("/3/toggle") >= 0) {
-    if (!isRecording) {
+  // Record points
+  if (pattern.equals("/3/xy")) {
+     if (!isRecording) {
       // Start recording a new stroke
       GmlBrush brush = new GmlBrush();
-      brush.set(GmlBrush.UNIQUE_STYLE_ID, MeshDemo.ID);
+      brush.set(GmlBrush.UNIQUE_STYLE_ID, BoxesDemo.ID);
+      //recorder.beginStroke(0, 0, brush);
       recorder.beginStroke(0, 0, brush);
       isRecording = true;
     }
-    else {
-      // Stop recording stroke
-      recorder.endStroke(0);
-      isRecording = false;
-    }
-    
-  }
-  // Record points
-  else if (isRecording && addr.equals("/3/xy")) {
     // Get pointer coords
     float x = message.get(0).floatValue();
     float y = message.get(1).floatValue();
     Vec3D v = new Vec3D(x, y, 0);
     recorder.addPoint(0, v, 0);
+    last = millis();
   }
 }
