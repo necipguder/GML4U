@@ -8,8 +8,8 @@ import gml4u.model.Gml;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GmlParser extends Thread {
 
@@ -36,7 +36,7 @@ public class GmlParser extends Thread {
 			callback = parent.getClass().getMethod("gmlEvent", new Class[] { GmlEvent.class });
 		}
 		catch (Exception e) {
-			LOGGER.warn(parent.getClass()+" shall implement a \"public void gmlEvent(GmlEvent event)\" method to be able to receive GmlEvent");
+			LOGGER.log(Level.WARNING, parent.getClass()+" shall implement a \"public void gmlEvent(GmlEvent event)\" method to be able to receive GmlEvent");
 		}
 
 		this.parent = parent;
@@ -51,7 +51,7 @@ public class GmlParser extends Thread {
 	 * Starts the thread
 	 */
 	public void start () {
-		LOGGER.debug("Starting thread");
+		LOGGER.log(Level.FINEST, "Starting thread");
 		if (!running) {
 			running = true;
 			super.start();
@@ -65,14 +65,14 @@ public class GmlParser extends Thread {
 		while (running){
 			try {
 				if (fileList.size() > 0) {
-					LOGGER.debug("Start parsing: "+fileList.size()+ "files");
+					LOGGER.log(Level.FINEST, "Start parsing: "+fileList.size()+ "files");
 					
 					for (String fileName : fileList) {
 						Gml gml = GmlParsingHelper.getGml(fileName, normalize);
 						if (null != gml && null !=callback) {
 							try {
 								// Call the method with this object as the argument!
-								LOGGER.debug("Invoking callback");
+								LOGGER.log(Level.FINEST, "Invoking callback");
 								callback.invoke(parent, new GmlParsingEvent(gml) );
 							}
 							catch (Exception e) {
@@ -90,7 +90,7 @@ public class GmlParser extends Thread {
 				//LOGGER.warn(e.getMessage());
 			}
 		}
-		LOGGER.debug(threadId + " thread is done!");  // The thread is done when we get to the end of run()
+		LOGGER.log(Level.FINEST, threadId + " thread is done!");  // The thread is done when we get to the end of run()
 		quit();
 	}
 
@@ -102,7 +102,7 @@ public class GmlParser extends Thread {
 	 * @param normalize - boolean
 	 */
 	public void parseFolder(final String folder, String regex, boolean normalize) {
-		LOGGER.debug("Scanning "+folder);
+		LOGGER.log(Level.FINEST, "Scanning "+folder);
 		List<String> files = FileUtils.scanFolder(folder, regex);
 		this.fileList.addAll(files);
 		this.normalize = normalize;
@@ -145,7 +145,7 @@ public class GmlParser extends Thread {
 	 * @param normalize - boolean
 	 */
 	public void parseFiles(final List<String> fileList, boolean normalize) {
-		LOGGER.debug(fileList + " to be parsed");
+		LOGGER.log(Level.FINEST, fileList + " to be parsed");
 		this.fileList.addAll(fileList);
 		this.normalize = normalize;
 	}
@@ -168,7 +168,7 @@ public class GmlParser extends Thread {
 	 * @param normalize - boolean
 	 */
 	public void parse(final String file, boolean normalize) {
-		LOGGER.debug(file + " to be parsed");
+		LOGGER.log(Level.FINEST, file + " to be parsed");
 		this.fileList.add(file);
 		this.normalize = normalize;
 	}
@@ -187,7 +187,7 @@ public class GmlParser extends Thread {
 	 * Quits the thread
 	 */
 	public void quit() {
-		LOGGER.debug(threadId + " quitting.");
+		LOGGER.log(Level.FINEST, threadId + " quitting.");
 		running = false;
 		interrupt(); // in case the thread is waiting. . .
 	}

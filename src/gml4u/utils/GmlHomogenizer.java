@@ -5,8 +5,8 @@ import gml4u.model.GmlPoint;
 import gml4u.model.GmlStroke;
 
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import toxi.geom.AABB;
 import toxi.geom.Vec3D;
@@ -41,7 +41,7 @@ public class GmlHomogenizer {
 			// Scale with screenbounds
 			
 			// Tag aspect ratio * screen aspect ratio
-			LOGGER.debug("Client "+CLIENT_FATTAG);
+			LOGGER.log(Level.FINEST, "Client "+CLIENT_FATTAG);
 			
 			// Get a normalized screenBound and scale all points using this
 			Vec3D screenScale = Vec3DUtils.getNormalized(gml.environment.screenBounds);			
@@ -68,7 +68,7 @@ public class GmlHomogenizer {
 			
 			// Reduce z
 			// Normalize
-			LOGGER.debug("Client "+CLIENT_GRAFANALYSIS);
+			LOGGER.log(Level.FINEST, "Client "+CLIENT_GRAFANALYSIS);
 			
 			// Get max z from normalized screenBounds 
 			Vec3D screenScale = Vec3DUtils.getNormalized(gml.environment.screenBounds);			
@@ -88,7 +88,7 @@ public class GmlHomogenizer {
 			gml.replaceStrokes(strokes);
 		} else if ( CLIENT_MTAGGER_FIELD_REC.equalsIgnoreCase(client)) {
 			
-			LOGGER.debug("Client " + CLIENT_MTAGGER_FIELD_REC);
+			LOGGER.log(Level.FINEST, "Client " + CLIENT_MTAGGER_FIELD_REC);
 			// 8 bit processor can't normalize, too much floating point math
 			// so we fix it here
 			float minx = 10000, miny = 10000, maxx = -10000, maxy = -10000;

@@ -7,8 +7,9 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 
 import toxi.geom.AABB;
 import toxi.geom.PointCloud;
@@ -137,7 +138,7 @@ public class Gml {
 			layers.get(layer).add(stroke);
 		}
 		else {
-			LOGGER.warn("Stroke wasn't added. Reason: Null or empty stroke");
+			LOGGER.log(Level.FINEST, "Stroke wasn't added. Reason: Null or empty stroke");
 		}
 	}
 

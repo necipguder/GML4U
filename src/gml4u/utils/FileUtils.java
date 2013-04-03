@@ -4,10 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.apache.log4j.Logger;
 
 public class FileUtils {
 
@@ -26,14 +27,14 @@ public class FileUtils {
 	 */
 	public static List<String> scanFolder(String folder, String regex) {
 		if (null == regex || regex.length() == 0) {
-			LOGGER.warn("Regex is empty of null: will search for \"*.gml\" files");
+			LOGGER.log(Level.WARNING, "Regex is empty of null: will search for \"*.gml\" files");
 			regex = GML_FILE_REGEX;
 		}
 		else {
 			try {
 	            Pattern.compile(regex);
 	        } catch (PatternSyntaxException exception) {
-				LOGGER.warn("Regex is invalid, not filter will be used "+exception.getMessage());
+	        	LOGGER.log(Level.WARNING, "Regex is invalid, not filter will be used "+exception.getMessage());
 				regex = ".*";	        	
 	        }
 		}
@@ -75,10 +76,10 @@ public class FileUtils {
 		File file = new File(folder);
 		boolean success = file.mkdirs();
 		if (!success) {
-		    LOGGER.debug("Wrong folder name or folder already exists: "+folder);
+			LOGGER.log(Level.FINE, "Wrong folder name or folder already exists: "+folder);
 		}
 		else {
-			LOGGER.debug("Created folder: "+folder);
+			LOGGER.log(Level.FINEST, "Created folder: "+folder);
 		}
 	}
 	

@@ -5,8 +5,9 @@ import gml4u.utils.CallbackUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 
 public class GmlEventHandler {
 
@@ -57,15 +58,15 @@ public class GmlEventHandler {
 			try {
 				listener.getClass().getMethod(callbackMethod, callbackParameterClass).invoke(listener, event);
 			} catch (IllegalArgumentException e) {
-				LOGGER.error(e.getMessage());
+				LOGGER.log(Level.WARNING, e.getMessage());
 			} catch (SecurityException e) {
-				LOGGER.error(e.getMessage());
+				LOGGER.log(Level.WARNING, e.getMessage());
 			} catch (IllegalAccessException e) {
-				LOGGER.error(e.getMessage());
+				LOGGER.log(Level.WARNING, e.getMessage());
 			} catch (InvocationTargetException e) {
-				LOGGER.error(e.getMessage());
+				LOGGER.log(Level.WARNING, e.getMessage());
 			} catch (NoSuchMethodException e) {
-				LOGGER.error(e.getMessage());
+				LOGGER.log(Level.WARNING, e.getMessage());
 			}
 		}
 	}

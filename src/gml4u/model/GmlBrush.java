@@ -3,9 +3,9 @@ package gml4u.model;
 import gml4u.drawing.GmlBrushManager;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-
-import org.apache.log4j.Logger;
 
 public class GmlBrush extends GmlGenericContainer {
 
@@ -49,7 +49,7 @@ public class GmlBrush extends GmlGenericContainer {
 	 */
 	private void checkMandatoryParameters() {
 		if (null == get(GmlBrush.UNIQUE_STYLE_ID) || "".equals(get(GmlBrush.UNIQUE_STYLE_ID))) {
-			LOGGER.debug("No brush defined, using default Brush instead");
+			LOGGER.log(Level.FINEST, "No brush defined, using default Brush instead");
 			set(GmlBrush.UNIQUE_STYLE_ID, "unknown");
 		}
 	}
@@ -62,7 +62,7 @@ public class GmlBrush extends GmlGenericContainer {
 		String uniqueStyleID = getString("uniqueStyleID");
 		if (null == uniqueStyleID || "".equals(uniqueStyleID)) {
 			uniqueStyleID = GmlBrushManager.BRUSH_DEFAULT;
-			LOGGER.warn("uniqueStyleID is null or empty, using default instead");
+			LOGGER.log(Level.FINEST, "uniqueStyleID is null or empty, using default instead");
 			return uniqueStyleID;
 		}
 		return uniqueStyleID;

@@ -1,6 +1,9 @@
 package gml4u.utils;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 
 public class CallbackUtils {
 
@@ -18,10 +21,10 @@ public class CallbackUtils {
 		try {
 			object.getClass().getMethod(methodName, classe);
 		} catch (SecurityException e) {
-			LOGGER.warn("Cannot access methods of "+object.getClass().getName());
+			LOGGER.log(Level.WARNING, "Cannot access methods of "+object.getClass().getName());
 			return false;
 		} catch (NoSuchMethodException e) {
-			LOGGER.warn(object.getClass().getName()+" must implement this method: public void "+methodName+"("+classe.getCanonicalName()+")");
+			LOGGER.log(Level.WARNING, object.getClass().getName()+" must implement this method: public void "+methodName+"("+classe.getCanonicalName()+")");
 			return false;
 		}
 		return true;

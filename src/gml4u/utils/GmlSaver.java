@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import processing.core.PApplet;
 
@@ -37,7 +37,7 @@ public class GmlSaver extends Thread {
 			callback = parent.getClass().getMethod("gmlEvent", new Class[] { GmlEvent.class });
 		}
 		catch (Exception e) {
-			LOGGER.warn(parent.getClass()+" shall implement a \"public void gmlEvent(GmlEvent event)\" method to be able to receive GmlEvent");
+			LOGGER.log(Level.WARNING, parent.getClass()+" shall implement a \"public void gmlEvent(GmlEvent event)\" method to be able to receive GmlEvent");
 		}
 		
 		this.parent = parent;
@@ -52,7 +52,7 @@ public class GmlSaver extends Thread {
 	 * Starts the thread
 	 */
 	public void start () {
-		LOGGER.debug("Starting thread");
+		LOGGER.log(Level.FINEST, "Starting thread");
 		if (!running) {
 			running = true;
 			super.start();
@@ -67,33 +67,33 @@ public class GmlSaver extends Thread {
 			try {
 				if (gmlLocations.size() > 0) {
 
-					LOGGER.debug("Start saving: "+ gmlLocations.size() +" file(s)");
+					LOGGER.log(Level.FINEST, "Start saving: "+ gmlLocations.size() +" file(s)");
 					for (String location : gmlLocations.keySet()) {
 						boolean successful = GmlSavingHelper.save(gmlLocations.get(location), location);
 						
 						if (callback != null) {
 							try {
 								// Call the method with this object as the argument!
-								LOGGER.debug("Invoking callback");
+								LOGGER.log(Level.FINEST, "Invoking callback");
 								callback.invoke(parent, new GmlSavingEvent(location, successful) );
 							}
 							catch (Exception e) {
-								LOGGER.warn("I couldn't invoke that method for some reason. "+e.getMessage());
+								LOGGER.log(Level.FINEST, "I couldn't invoke that method for some reason. "+e.getMessage());
 							}
 						}
 					}
 					
-					LOGGER.debug("Finished saving");
+					LOGGER.log(Level.FINEST, "Finished saving");
 				}
 				gmlLocations.clear();						
 
 				sleep((long)(wait));	
 			}
 			catch (Exception e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.log(Level.WARNING, e.getMessage());
 			}
 		}
-		LOGGER.debug(threadId + " thread is done!");  // The thread is done when we get to the end of run()
+		LOGGER.log(Level.FINEST, threadId + " thread is done!");  // The thread is done when we get to the end of run()
 		quit();
 	}
 	
@@ -104,7 +104,7 @@ public class GmlSaver extends Thread {
 	public void save(Gml gml) {
 		String sketchPath = ((PApplet) parent).sketchPath;
 		String location = sketchPath+"/"+gml.getFileName();
-		LOGGER.debug("About to save a file as" + location);
+		LOGGER.log(Level.FINEST, "About to save a file as" + location);
 		this.gmlLocations.put(location, gml);
 	}
 	
@@ -115,7 +115,7 @@ public class GmlSaver extends Thread {
 	 * @param location - String
 	 */
 	public void save(Gml gml, String location) {
-		LOGGER.debug("About to save a Gml to " + location);
+		LOGGER.log(Level.FINEST, "About to save a Gml to " + location);
 		this.gmlLocations.put(location, gml);
 	}
 	
@@ -126,7 +126,7 @@ public class GmlSaver extends Thread {
 	 * @param folder - String
 	 */
 	public void save(List<Gml> gmlList, String folder) {
-		LOGGER.debug("About to save "+gmlLocations.size()+" Gml files to" + folder);
+		LOGGER.log(Level.FINEST, "About to save "+gmlLocations.size()+" Gml files to" + folder);
 		for (Gml gml : gmlList) {
 			save(gml, folder+"/"+gml.getFileName());
 		}
@@ -138,7 +138,7 @@ public class GmlSaver extends Thread {
 	 * @param gmlLocations - Map<String, Gml>
 	 */
 	public void save(Map<String, Gml> gmlLocations) {
-		LOGGER.debug("About to save "+gmlLocations.size() +" Gml files");
+		LOGGER.log(Level.FINEST, "About to save "+gmlLocations.size() +" Gml files");
 		this.gmlLocations.putAll(gmlLocations);
 	}
 
@@ -146,7 +146,7 @@ public class GmlSaver extends Thread {
 	 * Quits the thread
 	 */
 	public void quit() {
-		LOGGER.debug(threadId + "Quitting.");
+		LOGGER.log(Level.FINEST, threadId + "Quitting.");
 		running = false;
 		interrupt(); // in case the thread is waiting. . .
 	}

@@ -1,8 +1,8 @@
 package gml4u.model;
 
 import java.util.Map;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GmlClient extends GmlGenericContainer {
 
@@ -41,7 +41,7 @@ public class GmlClient extends GmlGenericContainer {
 	 * Checks for mandatory parameters and set them with default values if null or empty
 	 */
 	private void checkMandatoryParameters() {
-		LOGGER.debug("Checking mandatory paramaters");
+		LOGGER.log(Level.FINEST, "Checking mandatory paramaters");
 		if (null == get(NAME) || "".equals(get(NAME))) {
 			set(NAME, GmlConstants.DEFAULT_CLIENT_NAME);
 		}

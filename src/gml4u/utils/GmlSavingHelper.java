@@ -8,15 +8,16 @@ import gml4u.model.GmlLocation;
 import gml4u.model.GmlPoint;
 import gml4u.model.GmlStroke;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
-import org.apache.log4j.Logger;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -77,7 +78,7 @@ public class GmlSavingHelper {
 
 		// TODO choose which version to save into and create a factory
 		
-		LOGGER.debug("Start saving GML file to "+location);
+		LOGGER.log(Level.FINEST, "Start saving GML file to "+location);
 		
 		try {
 			// Make sure the folder exists
@@ -89,10 +90,10 @@ public class GmlSavingHelper {
 			return true;
 		}
 		catch (IOException e) {
-			LOGGER.error("Saving failed. Reason: "+ e.getMessage());
+			LOGGER.log(Level.WARNING, "Saving failed. Reason: "+ e.getMessage());
 		}
 		catch (ParserConfigurationException e) {
-			LOGGER.error("Saving failed. Reason: parsing issue, "+ e.getMessage());
+			LOGGER.log(Level.WARNING, "Saving failed. Reason: parsing issue, "+ e.getMessage());
 		}
 		return false;
 	}
@@ -111,11 +112,11 @@ public class GmlSavingHelper {
 			gmlString = XmlUtils.getString(document);
 		}
 		catch (ParserConfigurationException e) {
-			LOGGER.error("Getting GML document failed. Reason: parsing issue, "+ e.getMessage());
+			LOGGER.log(Level.WARNING, "Getting GML document failed. Reason: parsing issue, "+ e.getMessage());
 		} catch (TransformerFactoryConfigurationError e) {
-			LOGGER.error("Getting GML document failed. Reason: transferfactoryconfiguration issue, "+ e.getMessage());
+			LOGGER.log(Level.WARNING, "Getting GML document failed. Reason: transferfactoryconfiguration issue, "+ e.getMessage());
 		} catch (TransformerException e) {
-			LOGGER.error("Getting GML document failed. Reason: transformer issue, "+ e.getMessage());
+			LOGGER.log(Level.WARNING, "Getting GML document failed. Reason: transformer issue, "+ e.getMessage());
 		}
 		
 		return gmlString;
@@ -128,7 +129,7 @@ public class GmlSavingHelper {
 	 * @throws ParserConfigurationException
 	 */
 	private static Document createDocument(final Gml gml) throws ParserConfigurationException {
-		LOGGER.debug("Start building Xml from Gml");
+		LOGGER.log(Level.FINEST, "Start building Xml from Gml");
 
 		Document document = XmlUtils.createDocument();
 
@@ -170,7 +171,7 @@ public class GmlSavingHelper {
 			}
 		}
 
-		LOGGER.debug("Finished building document");
+		LOGGER.log(Level.FINEST, "Finished building document");
 		return document; 
 	}
 

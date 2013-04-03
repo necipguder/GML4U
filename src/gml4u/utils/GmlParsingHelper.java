@@ -11,14 +11,14 @@ import gml4u.model.GmlLocation;
 import gml4u.model.GmlPoint;
 import gml4u.model.GmlStroke;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -46,7 +46,7 @@ public class GmlParsingHelper {
 	 */
 	public static Gml getGml(String file, boolean normalize) {
 
-		LOGGER.debug("Parsing from file: "+ file);
+		LOGGER.log(Level.FINEST, "Parsing from file: "+ file);
 
 		Gml gml = parseGml(file, true);
 		gml = cleanGml(gml, normalize);
@@ -74,7 +74,7 @@ public class GmlParsingHelper {
 	* @return Gml
 	*/
 	public static Gml getGmlFromString(String inputString, boolean normalize) {
-		LOGGER.debug("Parsing from String");
+		LOGGER.log(Level.FINEST, "Parsing from String");
 		
 		Gml gml = parseGml(inputString, false);
 		gml = cleanGml(gml, normalize);
@@ -95,7 +95,7 @@ public class GmlParsingHelper {
 
 		if (normalize) {
 
-			LOGGER.debug("normalize "+ normalize);
+			LOGGER.log(Level.FINEST, "normalize "+ normalize);
 			
 
 			// At this point all Gml points should
@@ -217,7 +217,7 @@ public class GmlParsingHelper {
 			if (e.getChildren().size() == 1) {
 				String value = e.getValue();
 				environment.set(name, value);
-				LOGGER.debug(name+"="+ value);				
+				LOGGER.log(Level.FINEST, name+"="+ value);				
 			}
 			
 			// loop through sub nodes to create vectors
@@ -225,7 +225,7 @@ public class GmlParsingHelper {
 
 				Vec3D v = getGmlVec3D(e.getChildren());
 				environment.set(name, v);
-				LOGGER.debug(name+"="+ v);				
+				LOGGER.log(Level.FINEST, name+"="+ v);				
 				
 				// Specific case for realScale "unit" subnode
 				if (e.getName().equalsIgnoreCase("realScale")) {
@@ -238,7 +238,7 @@ public class GmlParsingHelper {
 					}
 
 					environment.set("realScaleUnit", realScaleUnit);
-					LOGGER.debug("realScaleUnit"+"="+ realScaleUnit);				
+					LOGGER.log(Level.FINEST, "realScaleUnit"+"="+ realScaleUnit);				
 				}
 			}
 		}
@@ -435,7 +435,7 @@ public class GmlParsingHelper {
 				}
 			}
 			catch (NumberFormatException ex) {
-				LOGGER.warn(ex.getMessage());
+				LOGGER.log(Level.WARNING, ex.getMessage());
 			}
 		}
 		return v;
@@ -521,7 +521,7 @@ public class GmlParsingHelper {
 				}
 			}
 			catch (NumberFormatException ex) {
-				LOGGER.warn(ex.getMessage());
+				LOGGER.log(Level.WARNING, ex.getMessage());
 			}
 		}
 		return loc;
@@ -549,7 +549,7 @@ public class GmlParsingHelper {
 			container.setParameters(map);
 		}
 		else {
-			LOGGER.warn("Doing nothing. Reason: elements is null or empty");
+			LOGGER.log(Level.WARNING, "Doing nothing. Reason: elements is null or empty");
 		}
 	}
 
@@ -595,7 +595,7 @@ public class GmlParsingHelper {
 			}
 			else {
 				// Nothing found, returning null
-				LOGGER.warn("Unrecognized element type: "+element.toString());
+				LOGGER.log(Level.WARNING, "Unrecognized element type: "+element.toString());
 				return null;
 			}
 		}

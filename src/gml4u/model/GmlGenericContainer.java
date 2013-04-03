@@ -1,12 +1,11 @@
 package gml4u.model;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 
-import processing.core.PApplet;
 
 import toxi.geom.Vec3D;
 
@@ -45,7 +44,7 @@ public abstract class GmlGenericContainer {
 			return map.get(param);
 		}
 		catch (Exception e) {
-			LOGGER.warn("Returning null. Reason: "+ param +" doesn't exist");
+			LOGGER.log(Level.FINEST, "Returning null. Reason: "+ param +" doesn't exist");
 			return null;
 		}
 	}
@@ -59,7 +58,7 @@ public abstract class GmlGenericContainer {
 			map.remove(param);
 		}
 		catch (Exception e) {
-			LOGGER.warn("Object wasn't removed. Reason: "+ param +" doesn't exist");
+			LOGGER.log(Level.FINEST, "Object wasn't removed. Reason: "+ param +" doesn't exist");
 		}
 	}
 	
@@ -75,7 +74,7 @@ public abstract class GmlGenericContainer {
 			return v;
 		}
 		catch (Exception e) {
-			LOGGER.warn("Returning null. Reason: "+ param +" value is not a Vec3D");
+			LOGGER.log(Level.FINEST, "Returning null. Reason: "+ param +" value is not a Vec3D");
 			return null;
 		}
 	}
@@ -92,7 +91,7 @@ public abstract class GmlGenericContainer {
 			return s;
 		}
 		catch (Exception e) {
-			LOGGER.warn("Returning null. Reason: "+ param +" value is not a String");
+			LOGGER.log(Level.FINEST, "Returning null. Reason: "+ param +" value is not a String");
 			return null;
 		}
 	}
@@ -109,7 +108,7 @@ public abstract class GmlGenericContainer {
 			return f;
 		}
 		catch (Exception e) {
-			LOGGER.warn("Returning null. Reason: "+ param +" value is not a Float");
+			LOGGER.log(Level.FINEST, "Returning null. Reason: "+ param +" value is not a Float");
 			return null;
 		}
 	}
@@ -126,7 +125,7 @@ public abstract class GmlGenericContainer {
 			return i;
 		}
 		catch (Exception e) {
-			LOGGER.warn("Returning null. Reason: "+ param +" value is not an Integer");
+			LOGGER.log(Level.FINEST, "Returning null. Reason: "+ param +" value is not an Integer");
 			return null;
 		}
 	}
@@ -143,7 +142,7 @@ public abstract class GmlGenericContainer {
 			return l;
 		}
 		catch (Exception e) {
-			LOGGER.warn("Returning null. Reason: "+ param +" value is not a Long");
+			LOGGER.log(Level.FINEST, "Returning null. Reason: "+ param +" value is not a Long");
 			return null;
 		}
 	}
@@ -160,7 +159,7 @@ public abstract class GmlGenericContainer {
 			return c;
 		}
 		catch (Exception e) {
-			LOGGER.info("Returning null. Reason: "+ param +" value is not a Color");
+			LOGGER.log(Level.FINEST, e.getMessage()+"Returning null. Reason: "+ param +" value is not a Color");
 			return null;
 		}
 	}

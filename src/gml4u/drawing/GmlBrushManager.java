@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -98,7 +98,7 @@ public class GmlBrushManager {
 			defaultId = styleId;
 		}
 		else {
-			LOGGER.warn(STYLE_NOT_FOUND + ": " +DEFAULT_WASNT_CHANGED);
+			LOGGER.log(Level.FINEST, STYLE_NOT_FOUND + ": " +DEFAULT_WASNT_CHANGED);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class GmlBrushManager {
 	 */
 	public GmlStrokeDrawer get(int index) {
 		if (null == drawers.get(index)) {
-			LOGGER.warn("Style not found, returning default");
+			LOGGER.log(Level.FINEST, "Style not found, returning default");
 			return drawers.get(defaultId);
 		}
 		return drawers.get(index);
@@ -140,7 +140,7 @@ public class GmlBrushManager {
 	 */
 	public GmlStrokeDrawer get(String styleId) {
 		if (null == drawers.get(styleId)) {
-			LOGGER.warn(STYLE_NOT_FOUND + " : "+ RETURNING_DEFAULT);
+			LOGGER.log(Level.FINEST, STYLE_NOT_FOUND + " : "+ RETURNING_DEFAULT);
 			return drawers.get(defaultId);
 		}
 		return drawers.get(styleId);
@@ -153,7 +153,7 @@ public class GmlBrushManager {
 	 */
 	public String getID(int index) {
 		if (index < 0 || index > drawers.size()-1) {
-			LOGGER.warn(STYLE_NOT_FOUND + " : " +USING_DEFAULT);
+			LOGGER.log(Level.FINEST, STYLE_NOT_FOUND + " : " +USING_DEFAULT);
 			return defaultId;
 		}
 		ArrayList<String> keys = new ArrayList<String>();
@@ -168,7 +168,7 @@ public class GmlBrushManager {
 	 */
 	public void add(GmlStrokeDrawer drawer) {
 		if (null != drawers.get(drawer.getId())) {
-			LOGGER.warn(REPLACING_EXISTING + "("+drawer.getId()+")");
+			LOGGER.log(Level.FINEST, REPLACING_EXISTING + "("+drawer.getId()+")");
 		}
 		drawers.put(drawer.getId(), drawer);		
 	}
@@ -194,11 +194,11 @@ public class GmlBrushManager {
 				drawers.remove(styleId);
 			}
 			else {
-				LOGGER.warn(CANNOT_REMOVE_DEFAULT_STYLE);
+				LOGGER.log(Level.FINEST, CANNOT_REMOVE_DEFAULT_STYLE);
 			}
 		}
 		else {
-			LOGGER.warn(STYLE_NOT_FOUND + ": " +DEFAULT_WASNT_CHANGED);
+			LOGGER.log(Level.FINEST, STYLE_NOT_FOUND + ": " +DEFAULT_WASNT_CHANGED);
 		}
 	}
 
@@ -212,7 +212,7 @@ public class GmlBrushManager {
 			return brush.getColor(GmlBrush.COLOR);
 		}
 		else {
-			LOGGER.info("No color defined, using default (green)");
+			LOGGER.log(Level.FINEST, "No color defined, using default (green)");
 			return (255 << 24) | (0 << 16) | (255 << 8) | 0;
 		}
 	}
@@ -248,7 +248,7 @@ public class GmlBrushManager {
 	 */
 	public void draw(PGraphics g, Gml gml, float scale, float timeStart, float timeEnd) {
 		if (null == gml) {
-			LOGGER.warn(NULL_GML);
+			LOGGER.log(Level.WARNING, NULL_GML);
 		}
 		for (GmlStroke currentStroke : gml.getStrokes()) {
 			draw(g, currentStroke, scale, timeStart, timeEnd);
@@ -289,7 +289,7 @@ public class GmlBrushManager {
 	 */
 	public void draw(PGraphics g, Gml gml, float scale, float timeStart, float timeEnd, String drawer) {
 		if (null == gml) {
-			LOGGER.warn(NULL_GML);
+			LOGGER.log(Level.WARNING, NULL_GML);
 		}
 		else {
 			for (GmlStroke currentStroke : gml.getStrokes()) {
@@ -332,7 +332,7 @@ public class GmlBrushManager {
 	 */
 	public void draw(PGraphics g, Gml gml, float scale, float timeStart, float timeEnd, GmlBrush brush) {
 		if (null == gml) {
-			LOGGER.warn(NULL_GML);
+			LOGGER.log(Level.WARNING, NULL_GML);
 		}
 		else {
 			for (GmlStroke currentStroke : gml.getStrokes()) {
@@ -374,7 +374,7 @@ public class GmlBrushManager {
 		if (null != stroke) {
 			String style = "";
 			if (null == stroke.getBrush()) {
-				LOGGER.warn(NO_BRUSH);
+				LOGGER.log(Level.FINEST, NO_BRUSH);
 			}
 			else {
 				style = stroke.getBrush().getStyleID();
@@ -383,7 +383,7 @@ public class GmlBrushManager {
 
 		}
 		else {
-			LOGGER.warn(NULL_STROKE);
+			LOGGER.log(Level.WARNING, NULL_STROKE);
 		}
 	}
 
@@ -429,7 +429,7 @@ public class GmlBrushManager {
 			g.popStyle();
 		}
 		else {
-			LOGGER.warn(NULL_STROKE);
+			LOGGER.log(Level.WARNING, NULL_STROKE);
 		}
 	}
 
@@ -469,7 +469,7 @@ public class GmlBrushManager {
 		if (null != stroke) {
 			String style = "";
 			if (null == brush) {
-				LOGGER.warn(NO_BRUSH);
+				LOGGER.log(Level.FINEST, NO_BRUSH);
 			}
 			else {
 				style = brush.getStyleID();
@@ -483,7 +483,7 @@ public class GmlBrushManager {
 
 		}
 		else {
-			LOGGER.warn(NULL_STROKE);
+			LOGGER.log(Level.WARNING, NULL_STROKE);
 		}
 	}
 
@@ -497,7 +497,7 @@ public class GmlBrushManager {
 			draw(parent.g, gml, scale, 0, Float.MAX_VALUE);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -512,7 +512,7 @@ public class GmlBrushManager {
 			draw(parent.g, gml, scale, 0, time);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -526,14 +526,14 @@ public class GmlBrushManager {
 	public void draw(Gml gml, float scale, float timeStart, float timeEnd) {
 		if (null != parent) {
 			if (null == gml) {
-				LOGGER.warn(NULL_GML);
+				LOGGER.log(Level.WARNING, NULL_GML);
 			}
 			for (GmlStroke currentStroke : gml.getStrokes()) {
 				draw(parent.g, currentStroke, scale, timeStart, timeEnd);
 			}
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -547,7 +547,7 @@ public class GmlBrushManager {
 			draw(parent.g, gml, scale, 0, Float.MAX_VALUE, drawer);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -562,7 +562,7 @@ public class GmlBrushManager {
 			draw(parent.g, gml, scale, 0, time, drawer);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -576,14 +576,14 @@ public class GmlBrushManager {
 	public void draw(Gml gml, float scale, float timeStart, float timeEnd, String drawer) {
 		if (null != parent) {
 			if (null == gml) {
-				LOGGER.warn(NULL_GML);
+				LOGGER.log(Level.WARNING, NULL_GML);
 			}
 			for (GmlStroke currentStroke : gml.getStrokes()) {
 				draw(parent.g, currentStroke, scale, timeStart, timeEnd, drawer);
 			}
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -598,7 +598,7 @@ public class GmlBrushManager {
 			draw(parent.g, gml, scale, 0, Float.MAX_VALUE, brush);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -614,7 +614,7 @@ public class GmlBrushManager {
 			draw(parent.g, gml, scale, 0, time, brush);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -629,14 +629,14 @@ public class GmlBrushManager {
 	public void draw(Gml gml, float scale, float timeStart, float timeEnd, GmlBrush brush) {
 		if (null != parent) {
 			if (null == gml) {
-				LOGGER.warn(NULL_GML);
+				LOGGER.log(Level.WARNING, NULL_GML);
 			}
 			for (GmlStroke currentStroke : gml.getStrokes()) {
 				draw(parent.g, currentStroke, scale, timeStart, timeEnd, brush);
 			}
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 	/**
@@ -649,7 +649,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, 0, Float.MAX_VALUE);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -664,7 +664,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, 0, time);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -680,7 +680,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, timeStart, timeEnd);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -695,7 +695,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, 0, Float.MAX_VALUE, drawer);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -711,7 +711,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, 0, time, drawer);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -728,7 +728,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, timeStart, timeEnd, drawer);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}	
 
@@ -743,7 +743,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, 0, Float.MAX_VALUE, brush);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -759,7 +759,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, 0, time, brush);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}
 
@@ -776,7 +776,7 @@ public class GmlBrushManager {
 			draw(parent.g, stroke, scale, timeStart, timeEnd, brush);
 		}
 		else {
-			LOGGER.warn(MISSING_PAPPLET);
+			LOGGER.log(Level.WARNING, MISSING_PAPPLET);
 		}
 	}	
 }

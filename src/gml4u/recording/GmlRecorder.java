@@ -11,8 +11,8 @@ import gml4u.utils.Vec3DUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import toxi.geom.AABB;
 import toxi.geom.Vec3D;
@@ -160,7 +160,7 @@ public class GmlRecorder {
 	 */
 	public void beginStroke(int sessionID, int layer, final GmlBrush brush) {
 		
-		LOGGER.debug("Start recording");
+		LOGGER.log(Level.FINEST, "Start recording");
 		GmlStroke stroke = new GmlStroke();
 		stroke.setLayer(layer);
 		stroke.setBrush(brush);	
@@ -219,7 +219,7 @@ public class GmlRecorder {
 	 * @param thickness - float
 	 */
 	public void addPoint(int sessionID, Vec3D v, final float time, final float pressure, final Vec3D rotation, final Vec3D direction, float thickness) {
-		LOGGER.debug("Add point");
+		LOGGER.log(Level.FINEST, "Add point");
 
 		// Check bounding box and do not add if outside
 		/*
@@ -241,7 +241,7 @@ public class GmlRecorder {
 						strokes.get(sessionID).addPoint(new GmlPoint(v, time, pressure, rotation, direction, thickness));
 					}
 					else {
-						LOGGER.debug("Skipped, too close from previous point: "+prev.distanceTo(v));
+						LOGGER.log(Level.FINE, "Skipped, too close from previous point: "+prev.distanceTo(v));
 					}
 				}
 				else { // First point, add it
@@ -256,7 +256,7 @@ public class GmlRecorder {
 	 * @param sessionID - int
 	 */
 	public void endStroke(int sessionID) {
-		LOGGER.debug("Stop recording");
+		LOGGER.log(Level.FINEST, "Stop recording");
 		GmlStroke stroke = strokes.get(sessionID);
 		// Add the stroke only if significant (at least a certain length)
 		if (null != stroke && stroke.getLength() > minStrokeLength) {
@@ -269,7 +269,7 @@ public class GmlRecorder {
 	 * Ends recording of all GmlStroke
 	 */
 	public void endStrokes() {
-		LOGGER.debug("Stop recording");
+		LOGGER.log(Level.FINEST, "Stop recording");
 		for (int sessionID : strokes.keySet()) {
 			GmlStroke stroke = strokes.get(sessionID);
 			// Add the stroke only if significant (at least a certain length)

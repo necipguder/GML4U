@@ -24,7 +24,6 @@ import netP5.*;
 
 import gml4u.brushes.*;
 import gml4u.recording.*;
-import gml4u.test.*;
 import gml4u.utils.*;
 import gml4u.drawing.*;
 import gml4u.events.*;

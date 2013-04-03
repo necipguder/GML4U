@@ -1,6 +1,8 @@
 package gml4u.model;
 
-import org.apache.log4j.Logger;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import toxi.geom.Vec3D;
 
@@ -53,7 +55,7 @@ public class GmlEnvironment {
 		else if (name.equalsIgnoreCase("origin"))		this.origin = v;
 		else if (name.equalsIgnoreCase("realScale")) 	this.origin = v;
 		else {
-			LOGGER.warn("Skipping "+name+": field doesn't exist");
+			LOGGER.log(Level.WARNING, "Skipping "+name+": field doesn't exist");
 		}
 	}
 	
@@ -66,7 +68,7 @@ public class GmlEnvironment {
 		if (name.equalsIgnoreCase("realScaleUnit")) 	this.realScaleUnit = value;
 		else if (name.equalsIgnoreCase("screenScale"))	this.screenScale = Float.parseFloat(value);
 		else {
-			LOGGER.warn("Skipping "+name+": field doesn't exist");
+			LOGGER.log(Level.FINEST, "Skipping "+name+": field doesn't exist");
 		}
 	}
 }

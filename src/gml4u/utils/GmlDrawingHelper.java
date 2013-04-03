@@ -1,8 +1,10 @@
 package gml4u.utils;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import gml4u.model.GmlEnvironment;
+
 
 import toxi.geom.Vec3D;
 
@@ -29,7 +31,7 @@ public class GmlDrawingHelper {
 		Vec3D screenBounds = environment.screenBounds;
 		
 		float screenRatio = screen.x/screen.y;
-		LOGGER.debug("screen ratio: "+screenRatio);
+		LOGGER.log(Level.FINEST, "screen ratio: "+screenRatio);
 		
 		// Remap the graff to the screen
 		if (Math.abs(up.x) == 1) {

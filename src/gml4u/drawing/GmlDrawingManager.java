@@ -12,8 +12,9 @@ import gml4u.model.GmlStroke;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 
 
 public class GmlDrawingManager {
@@ -104,14 +105,14 @@ public class GmlDrawingManager {
 	public void pulse(float timeMin, float timeMax) {
 
 		if (timeMin > timeMax) {
-			LOGGER.warn("Interval error, doing noting. Reason: start time must be lower than end time");
+			LOGGER.log(Level.FINEST, "Interval error, doing noting. Reason: start time must be lower than end time");
 		}
 		
 		else if (null != gml) {
 			
 			// Checks if drawing started
 			if (!started) {
-				LOGGER.debug("Drawing start");
+				LOGGER.log(Level.FINEST, "Drawing start");
 				// Fire new GmlDrawingStartEvent
 				GmlDrawingStartEvent event = new GmlDrawingStartEvent(gml);
 				eventHandler.fireNewEvent(event);
@@ -123,7 +124,7 @@ public class GmlDrawingManager {
 				
 				// Checks if stroke is new
 				if (!stagedStrokesIds.contains(stroke.getID())) {
-					LOGGER.debug("Stroke start");
+					LOGGER.log(Level.FINEST, "Stroke start");
 					// fire new GmlStrokeStartEvent
 					GmlStrokeStartEvent event = new GmlStrokeStartEvent(stroke);
 					eventHandler.fireNewEvent(event);
@@ -142,7 +143,7 @@ public class GmlDrawingManager {
 				
 				// Checks if stroke still has points to draw
 				if (stroke.nbPoints() == points.size()) {
-					LOGGER.debug("Stroke end");
+					LOGGER.log(Level.FINEST, "Stroke end");
 					// Fire new GmlStrokeEndEvent
 					GmlStrokeEndEvent event = new GmlStrokeEndEvent(stroke);
 					eventHandler.fireNewEvent(event);
@@ -151,7 +152,7 @@ public class GmlDrawingManager {
 			
 			// Checks if drawing ended
 			if (timeMax > gml.getDuration()) {
-				LOGGER.debug("Drawing end");
+				LOGGER.log(Level.FINEST, "Drawing end");
 				// Fire new GmlDrawingEndEvent
 				GmlDrawingEndEvent event = new GmlDrawingEndEvent();
 				eventHandler.fireNewEvent(event);

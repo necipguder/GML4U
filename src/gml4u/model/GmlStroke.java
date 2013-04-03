@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
+
 
 import toxi.geom.AABB;
 import toxi.geom.PointCloud;
@@ -193,7 +195,7 @@ public class GmlStroke {
 			this.brush = brush;
 		}
 		else {
-			LOGGER.warn("Brush wasn't added. Reason: brush is null");
+			LOGGER.log(Level.WARNING, "Brush wasn't added. Reason: brush is null");
 		}
 	}
 	
@@ -214,7 +216,7 @@ public class GmlStroke {
 			this.info = info;
 		}
 		else {
-			LOGGER.warn("Info wasn't added. Reason: info is null");
+			LOGGER.log(Level.WARNING, "Info wasn't added. Reason: info is null");
 		}
 	}
 	
@@ -285,7 +287,7 @@ public class GmlStroke {
 	public List<GmlPoint> getPoints(float start, float end) {
 		
 		if (end < start) {
-			LOGGER.warn("Interval start occurs after interavl end: doing nothing ");
+			LOGGER.log(Level.WARNING, "Interval start occurs after interavl end: doing nothing ");
 		}
 		List<GmlPoint> pts = new LinkedList<GmlPoint>();
 		for (GmlPoint point : points) {
@@ -325,11 +327,11 @@ public class GmlStroke {
 	 */
 	public void addPoint(GmlPoint point) {
 		if (null == point) {
-			LOGGER.warn("GmlPoint "+ point +" wasn't added. Reason: null");	
+			LOGGER.log(Level.FINEST, "GmlPoint "+ point +" wasn't added. Reason: null");	
 			return;
 		}
 		if (!point.isInAABB(boundingBox)) {
-			LOGGER.warn("Inconsistent GmlPoint "+ point +". Reason: outside "+ boundingBox);
+			LOGGER.log(Level.FINEST, "Inconsistent GmlPoint "+ point +". Reason: outside "+ boundingBox);
 		}
 		GmlPoint last = getLastPoint();
 		if (null != last) {
@@ -344,7 +346,7 @@ public class GmlStroke {
  	 */
 	public void addPoints(List<GmlPoint> pts) {
 		if (null == pts) {
-			LOGGER.warn("GmlPoint list wasn't added. Reason: null");
+			LOGGER.log(Level.WARNING, "GmlPoint list wasn't added. Reason: null");
 		}
 		else {
 			for (GmlPoint pt : pts) {

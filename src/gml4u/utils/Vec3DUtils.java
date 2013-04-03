@@ -1,6 +1,9 @@
 package gml4u.utils;
 
-import org.apache.log4j.Logger;
+
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import toxi.geom.AABB;
 import toxi.geom.ReadonlyVec3D;
@@ -54,7 +57,7 @@ public class Vec3DUtils {
 		Vec3D max = new Vec3D(1.0000001f, 1.0000001f, 1.0000001f);
 		if (v.isInAABB(AABB.fromMinMax(min, max)))
 		return true;
-		LOGGER.debug(v+" doesn't fit in "+ min + "/" + max);
+		LOGGER.log(Level.FINEST, v+" doesn't fit in "+ min + "/" + max);
 		return false;
 	}
 	
@@ -92,7 +95,7 @@ public class Vec3DUtils {
 
 		
 		if (!Vec3DUtils.isNormalized(v)) {
-			LOGGER.debug(v + " is not normalized. Might end up with incorrect rotation");
+			LOGGER.log(Level.FINEST, v + " is not normalized. Might end up with incorrect rotation");
 		}
 		
 		Vec3D translation = new Vec3D();
@@ -217,9 +220,9 @@ public class Vec3DUtils {
 		Vec2D containerAspectRatio2D = Vec2DUtils.getNormalized(container2D);
 		Vec2D aspectRatio2D = Vec2DUtils.getNormalized(aspectRatio.to2DXY());
 		
-		LOGGER.debug("container2D "+container2D);
-		LOGGER.debug("containerAspectRatio2D" +containerAspectRatio2D);
-		LOGGER.debug("aspectRatio2D" +aspectRatio2D);
+		LOGGER.log(Level.FINEST, "container2D "+container2D);
+		LOGGER.log(Level.FINEST, "containerAspectRatio2D" +containerAspectRatio2D);
+		LOGGER.log(Level.FINEST, "aspectRatio2D" +aspectRatio2D);
 
 		// Portrait
 		if (Math.abs(containerAspectRatio2D.x - aspectRatio2D.x) <= .0000001f) {

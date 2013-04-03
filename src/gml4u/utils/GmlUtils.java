@@ -5,8 +5,10 @@ import gml4u.model.GmlPoint;
 import gml4u.model.GmlStroke;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
+
 
 import toxi.geom.AABB;
 import toxi.geom.Vec2D;
@@ -151,7 +153,7 @@ public class GmlUtils {
 
 		// Get BoundingBox
 		AABB boundingBox = gml.getBoundingBox();
-		LOGGER.debug("bounding box before scaling"+ boundingBox.getMin() + " " + boundingBox.getMax());
+		LOGGER.log(Level.FINEST, "bounding box before scaling"+ boundingBox.getMin() + " " + boundingBox.getMax());
 
 		// Get bounding box min for later substraction 
 		Vec3D originShift = boundingBox.getMin();
@@ -199,11 +201,11 @@ public class GmlUtils {
 		// Get max z
 		
 		boundingBox = gml.getBoundingBox();
-		LOGGER.debug("bonding box after rescale"+ boundingBox.getMin() + " " + boundingBox.getMax());
+		LOGGER.log(Level.FINEST, "bounding box after rescale"+ boundingBox.getMin() + " " + boundingBox.getMax());
 		
 		float maxZ = boundingBox.getMax().z; 
 		if(maxZ > 1) {
-			LOGGER.debug("Z axis too long. Rescaling to fit 0-1");
+			LOGGER.log(Level.FINEST, "Z axis too long. Rescaling to fit 0-1");
 		// Else remap between 0 and 1
 			for (GmlStroke strok : gml.getStrokes()) {
 				float nPoints = strok.getPoints().size();
@@ -213,7 +215,7 @@ public class GmlUtils {
 			}		
 		}
 		boundingBox = gml.getBoundingBox();
-		LOGGER.debug("bonding box after z axis correction"+ boundingBox.getMin() + " " + boundingBox.getMax());		
+		LOGGER.log(Level.FINEST, "bounding box after z axis correction"+ boundingBox.getMin() + " " + boundingBox.getMax());		
 
 
 		// Store the aspect ratio and origin for reverse scaling

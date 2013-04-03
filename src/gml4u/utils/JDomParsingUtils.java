@@ -3,8 +3,10 @@ package gml4u.utils;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
+
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -26,9 +28,9 @@ public class JDomParsingUtils {
 			return document;
 		}
 		catch (IOException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 		} catch (JDOMException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
 		return null;
 	}
@@ -45,9 +47,9 @@ public class JDomParsingUtils {
 			return document;
 		}
 		catch (IOException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 		} catch (JDOMException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
 		return null;
 	}	
@@ -64,7 +66,7 @@ public class JDomParsingUtils {
 			return result;
 		}
 		catch (JDOMException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
 		return null;
 	}
@@ -81,7 +83,7 @@ public class JDomParsingUtils {
 			return result;
 		}
 		catch (JDOMException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
 		return null;
 	}
